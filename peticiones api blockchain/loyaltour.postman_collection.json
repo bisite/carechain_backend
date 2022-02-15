@@ -1,0 +1,741 @@
+{
+	"info": {
+		"_postman_id": "d1f77bd6-9f5c-4f64-99dc-4136c75ae73e",
+		"name": "loyaltour",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:6001/api/v1/blockchain/totalSupply",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:6001/api/v1/blockchain/totalSupply",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"api",
+						"v1",
+						"blockchain",
+						"totalSupply"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6001/api/v1/blockchain/root",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:6001/api/v1/blockchain/root",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"api",
+						"v1",
+						"blockchain",
+						"root"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6001/api/v1/blockchain/isPaused",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:6001/api/v1/blockchain/isPaused",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"api",
+						"v1",
+						"blockchain",
+						"isPaused"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6001/api/v1/blockchain/allowance?owner=0xBEd6748bFF42725e0682A34A17E59a45AB224471&spender=0xC446C0D669b2dD8d60118F8E7A5d66A301402cfA",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:6001/api/v1/blockchain/allowance?owner=0xBEd6748bFF42725e0682A34A17E59a45AB224471&spender=0xC446C0D669b2dD8d60118F8E7A5d66A301402cfA",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"api",
+						"v1",
+						"blockchain",
+						"allowance"
+					],
+					"query": [
+						{
+							"key": "owner",
+							"value": "0xBEd6748bFF42725e0682A34A17E59a45AB224471"
+						},
+						{
+							"key": "spender",
+							"value": "0xC446C0D669b2dD8d60118F8E7A5d66A301402cfA"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6001/api/v1/blockchain/balanceOf?address=0xBEd6748bFF42725e0682A34A17E59a45AB224471",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:6001/api/v1/blockchain/balanceOf?address=0xBEd6748bFF42725e0682A34A17E59a45AB224471",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"api",
+						"v1",
+						"blockchain",
+						"balanceOf"
+					],
+					"query": [
+						{
+							"key": "address",
+							"value": "0xBEd6748bFF42725e0682A34A17E59a45AB224471"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6001/api/v1/blockchain/isAdmin?address=0xBEd6748bFF42725e0682A34A17E59a45AB224471",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:6001/api/v1/blockchain/isAdmin?address=0xBEd6748bFF42725e0682A34A17E59a45AB224471",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"api",
+						"v1",
+						"blockchain",
+						"isAdmin"
+					],
+					"query": [
+						{
+							"key": "address",
+							"value": "0xBEd6748bFF42725e0682A34A17E59a45AB224471"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6001/api/v1/blockchain/transferRoot ",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "address",
+							"value": "0xC446C0D669b2dD8d60118F8E7A5d66A301402cfA",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "amount",
+							"value": "5",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "pKeyFrom",
+							"value": "d6b748a9faefe39bdb48d9dc238f0e6b106b6c39226abbe978f19813f99a38c5",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "address",
+							"value": "0xBEd6748bFF42725e0682A34A17E59a45AB224471",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:6001/api/v1/blockchain/transferRoot ",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"api",
+						"v1",
+						"blockchain",
+						"transferRoot "
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6001/api/v1/blockchain/unPause",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "recipient",
+							"value": "0xC446C0D669b2dD8d60118F8E7A5d66A301402cfA",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "amount",
+							"value": "5",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "pKeyFrom",
+							"value": "d6b748a9faefe39bdb48d9dc238f0e6b106b6c39226abbe978f19813f99a38c5",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "sender",
+							"value": "0xBEd6748bFF42725e0682A34A17E59a45AB224471",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:6001/api/v1/blockchain/unPause",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"api",
+						"v1",
+						"blockchain",
+						"unPause"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6001/api/v1/blockchain/pause",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "recipient",
+							"value": "0xC446C0D669b2dD8d60118F8E7A5d66A301402cfA",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "amount",
+							"value": "5",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "pKeyFrom",
+							"value": "d6b748a9faefe39bdb48d9dc238f0e6b106b6c39226abbe978f19813f99a38c5",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "sender",
+							"value": "0xBEd6748bFF42725e0682A34A17E59a45AB224471",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:6001/api/v1/blockchain/pause",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"api",
+						"v1",
+						"blockchain",
+						"pause"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6001/api/v1/blockchain/transferFrom",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "recipient",
+							"value": "0xC446C0D669b2dD8d60118F8E7A5d66A301402cfA",
+							"type": "text"
+						},
+						{
+							"key": "amount",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "pKeyFrom",
+							"value": "d6b748a9faefe39bdb48d9dc238f0e6b106b6c39226abbe978f19813f99a38c5",
+							"type": "text"
+						},
+						{
+							"key": "sender",
+							"value": "0xBEd6748bFF42725e0682A34A17E59a45AB224471",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:6001/api/v1/blockchain/transferFrom",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"api",
+						"v1",
+						"blockchain",
+						"transferFrom"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6001/api/v1/blockchain/transfer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "recipient",
+							"value": "0xC446C0D669b2dD8d60118F8E7A5d66A301402cfA",
+							"type": "text"
+						},
+						{
+							"key": "amount",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "pKeyFrom",
+							"value": "384d030f3e98dacf479de02c3553c0f44ac6bdd492d9b178e194ea8f15f132bc",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:6001/api/v1/blockchain/transfer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"api",
+						"v1",
+						"blockchain",
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6001/api/v1/blockchain/revokeAdmin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "address",
+							"value": "0xBEd6748bFF42725e0682A34A17E59a45AB224471",
+							"type": "text"
+						},
+						{
+							"key": "amount",
+							"value": "5",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "pKeyFrom",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:6001/api/v1/blockchain/revokeAdmin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"api",
+						"v1",
+						"blockchain",
+						"revokeAdmin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6001/api/v1/blockchain/grantAdmin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "address",
+							"value": "0xBEd6748bFF42725e0682A34A17E59a45AB224471",
+							"type": "text"
+						},
+						{
+							"key": "amount",
+							"value": "5",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "pKeyFrom",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:6001/api/v1/blockchain/grantAdmin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"api",
+						"v1",
+						"blockchain",
+						"grantAdmin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6001/api/v1/blockchain/burnFrom",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "addressFrom",
+							"value": "0xBEd6748bFF42725e0682A34A17E59a45AB224471",
+							"type": "text"
+						},
+						{
+							"key": "amount",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "pKeyFrom",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:6001/api/v1/blockchain/burnFrom",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"api",
+						"v1",
+						"blockchain",
+						"burnFrom"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6001/api/v1/blockchain/decreaseAllowance",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "addressToDecrease",
+							"value": "0xC446C0D669b2dD8d60118F8E7A5d66A301402cfA",
+							"type": "text"
+						},
+						{
+							"key": "amount",
+							"value": "10",
+							"type": "text"
+						},
+						{
+							"key": "pKeyFrom",
+							"value": "384d030f3e98dacf479de02c3553c0f44ac6bdd492d9b178e194ea8f15f132bc",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:6001/api/v1/blockchain/decreaseAllowance",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"api",
+						"v1",
+						"blockchain",
+						"decreaseAllowance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6001/api/v1/blockchain/increaseAllowance",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "addressToIncrease",
+							"value": "0xC446C0D669b2dD8d60118F8E7A5d66A301402cfA",
+							"type": "text"
+						},
+						{
+							"key": "amount",
+							"value": "15",
+							"type": "text"
+						},
+						{
+							"key": "pKeyFrom",
+							"value": "384d030f3e98dacf479de02c3553c0f44ac6bdd492d9b178e194ea8f15f132bc",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:6001/api/v1/blockchain/increaseAllowance",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"api",
+						"v1",
+						"blockchain",
+						"increaseAllowance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6001/api/v1/blockchain/burn",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "addressTo",
+							"value": "0xBEd6748bFF42725e0682A34A17E59a45AB224471",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "amount",
+							"value": "15",
+							"type": "text"
+						},
+						{
+							"key": "pKeyFrom",
+							"value": "384d030f3e98dacf479de02c3553c0f44ac6bdd492d9b178e194ea8f15f132bc",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:6001/api/v1/blockchain/burn",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"api",
+						"v1",
+						"blockchain",
+						"burn"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6001/api/v1/blockchain/approve",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "addressTo",
+							"value": "0xBEd6748bFF42725e0682A34A17E59a45AB224471",
+							"type": "text"
+						},
+						{
+							"key": "amount",
+							"value": "10",
+							"type": "text"
+						},
+						{
+							"key": "pKeyFrom",
+							"value": "d6b748a9faefe39bdb48d9dc238f0e6b106b6c39226abbe978f19813f99a38c5",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:6001/api/v1/blockchain/approve",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"api",
+						"v1",
+						"blockchain",
+						"approve"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:6001/api/v1/blockchain/mint",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "address",
+							"value": "0xBEd6748bFF42725e0682A34A17E59a45AB224471",
+							"type": "text"
+						},
+						{
+							"key": "amount",
+							"value": "10",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:6001/api/v1/blockchain/mint",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"api",
+						"v1",
+						"blockchain",
+						"mint"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

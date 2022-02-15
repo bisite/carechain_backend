@@ -1,0 +1,12 @@
+# Text files configuration
+
+* text eol=lf
+
+# Exclude vendor files from repository stats
+
+static/js/lib/* linguist-vendored
+static/css/lib/* linguist-vendored
+static/font-awesome/* linguist-vendored
+static/amcharts4/* linguist-vendored
+static/ace/* linguist-vendored
+static/jquery-ui/* linguist-vendored

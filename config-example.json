@@ -1,0 +1,59 @@
+{
+    "production": false,
+    "using_proxy": false,
+    "node_id": "",
+    "external_uri": "http://localhost:6001",
+    "external_uri_alt": "http://localhost:6002",
+    "allowed_origins": ["http://localhost:6001"],
+    "number_of_workers": 1,
+    "max_upload_file_size": 1073741824,
+    "redirect_secure": false,
+    "disable_email_validation": true,
+    "disable_session_address_binding": true,
+    "cdn": {
+        "bucket": "",
+        "domain": ""
+    },
+    "redis": {
+        "host": "127.0.0.1",
+        "port": 6379,
+        "password": "",
+        "channel": "example"
+    },
+    "http": {
+        "port": 6001,
+        "bind_address": ""
+    },
+    "https": {
+        "port": 6002,
+        "bind_address": "",
+        "certificate_file": "",
+        "private_key_file": "",
+        "spdy": true
+    },
+    "aws": {
+        "region": "eu-west-2"
+    },
+    "database": {
+        "type": "mongodb",
+        "name": "loyaltour",
+        "host": "localhost",
+        "port": "27017",
+        "user": "root",
+        "password": "",
+        "max_connections": 4
+    },
+    "mail": {
+        "service": "gmail",
+        "auth": {
+            "user": "blockchainairinstitute@gmail.com",
+            "pass": "air00institute"
+        }
+    },
+    "public_upload_bucket": "",
+    "temp_files_bucket": "",
+    "reCaptcha": {
+        "site_id": "",
+        "secret": ""
+    }
+}

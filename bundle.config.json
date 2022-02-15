@@ -1,0 +1,11 @@
+[
+    {
+        "name": "Bundle",
+        "path": "./static/js/",
+        "target": "bundle.js",
+        "entry": "main.js",
+        "requires": [
+            "utils.js"
+        ]
+    }
+]

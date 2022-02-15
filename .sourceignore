@@ -1,0 +1,8 @@
+# Ignores for sources (libraries)
+
+static/js/lib
+static/ace
+static/amcharts4
+static/jquery-ui
+static/font-awesome
+static/js/deprecated

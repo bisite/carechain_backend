@@ -1,0 +1,103 @@
+// Blockchain event listener
+
+"use strict";
+
+import Web3 from "web3";
+import { Monitor } from "../monitor";
+import { Log } from "web3-core";
+import { interpretLog } from "../utils/blockchain-events";
+import { AbiItem } from "web3-utils";
+
+//address
+
+export interface EthEventhandler {
+    address: string;
+    abi: AbiItem[];
+    handler: (event: { name: string; signature: string; arguments: {[key: string]: any}; txHash: string }, time: number, contract: string) => Promise<void>;
+}
+
+/**
+ * Event listener service
+ */
+export class EthEventListener {
+    public web3: Web3;
+    public handlers: {[key: string]: EthEventhandler};
+    public onBlockParsed: (blockNum: number) => Promise<void>;
+    public nextBlock: number;
+    public timeout;
+    public blockTime: number;
+
+    public setHandler(contract: string, abi: AbiItem[], handler: (event: { name: string; signature: string; arguments: {[key: string]: any}; txHash: string }, time: number, contract: string) => Promise<void>) {
+        this.handlers[contract] = {
+            address: contract,
+            abi: abi,
+            handler: handler,
+        }
+    }
+
+    public removeHandler(contract: string) {
+        delete this.handlers[contract];
+    }
+
+    constructor(web3: Web3, startBlock: number, blockTime: number) {
+        this.web3 = web3;
+        this.handlers = {};
+        this.nextBlock = startBlock;
+        this.onBlockParsed = null;
+        this.timeout = null;
+        this.blockTime = blockTime;
+    }
+
+    public start() {
+        this.prepareNextHandle();
+    }
+
+    public async handleNextBlock() {
+        this.timeout = null;
+        try {
+            const block = await this.web3.eth.getBlock(this.nextBlock, true);
+
+            if (block) {
+                const time = block.timestamp;
+                const transactions = block.transactions;
+                for (const transaction of transactions) {
+                    const receipt = await this.web3.eth.getTransactionReceipt(transaction.hash);
+
+                    for (const log of receipt.logs) {
+                        await this.handleLog(log, Number(time));
+                    }
+                }
+
+                if (this.onBlockParsed) {
+                    await this.onBlockParsed(this.nextBlock);
+                }
+
+                Monitor.info("[Event listener] Parsed block " + this.nextBlock);
+
+                this.nextBlock++;
+
+                this.timeout = setTimeout(this.handleNextBlock.bind(this), 1);
+            } else {
+                // No block
+                this.prepareNextHandle();
+            }
+        } catch (ex) {
+            Monitor.debugException(ex);
+            this.prepareNextHandle();
+        }
+    }
+
+    public prepareNextHandle() {
+        this.timeout = setTimeout(this.handleNextBlock.bind(this), this.blockTime);
+    }
+
+    public async handleLog(log: Log, time: number) {
+        const address = log.address;
+        if (this.handlers[address]) {
+            const event = interpretLog(this.web3, log, this.handlers[address].abi);
+            if (event) {
+                await this.handlers[address].handler(event, time, address);
+            }
+        }
+    }
+}

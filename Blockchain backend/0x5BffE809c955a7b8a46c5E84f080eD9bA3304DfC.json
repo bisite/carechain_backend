@@ -1,0 +1,916 @@
+[
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_topic",
+				"type": "uint256"
+			},
+			{
+				"name": "_issuer",
+				"type": "address"
+			},
+			{
+				"name": "_signature",
+				"type": "bytes"
+			},
+			{
+				"name": "_personalHash",
+				"type": "string"
+			},
+			{
+				"name": "_clauses",
+				"type": "string[]"
+			},
+			{
+				"name": "_conditions",
+				"type": "string[]"
+			},
+			{
+				"name": "_initTimeStamp",
+				"type": "uint256[]"
+			},
+			{
+				"name": "_endTimeStamp",
+				"type": "uint256[]"
+			},
+			{
+				"name": "_status",
+				"type": "uint256[]"
+			},
+			{
+				"name": "_sender",
+				"type": "uint256"
+			},
+			{
+				"name": "_signers",
+				"type": "address[]"
+			}
+		],
+		"name": "addClaim",
+		"outputs": [
+			{
+				"name": "claimRequestId",
+				"type": "bytes32"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_genericClaimId",
+				"type": "bytes32"
+			},
+			{
+				"name": "_issuer",
+				"type": "address"
+			},
+			{
+				"name": "_personalHash",
+				"type": "string"
+			},
+			{
+				"name": "_clauses",
+				"type": "string[]"
+			},
+			{
+				"name": "_conditions",
+				"type": "string[]"
+			},
+			{
+				"name": "_initTimeStamp",
+				"type": "uint256[]"
+			},
+			{
+				"name": "_endTimeStamp",
+				"type": "uint256[]"
+			},
+			{
+				"name": "_status",
+				"type": "uint256[]"
+			},
+			{
+				"name": "_sender",
+				"type": "uint256"
+			},
+			{
+				"name": "_signers",
+				"type": "address[]"
+			}
+		],
+		"name": "addClaimApoderado",
+		"outputs": [
+			{
+				"name": "claimRequestId",
+				"type": "bytes32"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_topic",
+				"type": "uint256"
+			},
+			{
+				"name": "_signature",
+				"type": "bytes"
+			},
+			{
+				"name": "_clauses",
+				"type": "string[]"
+			},
+			{
+				"name": "_conditions",
+				"type": "string[]"
+			},
+			{
+				"name": "_initTimeStamp",
+				"type": "uint256[]"
+			},
+			{
+				"name": "_endTimeStamp",
+				"type": "uint256[]"
+			},
+			{
+				"name": "_status",
+				"type": "uint256[]"
+			},
+			{
+				"name": "_sender",
+				"type": "uint256"
+			}
+		],
+		"name": "addClaimProveedor",
+		"outputs": [
+			{
+				"name": "claimRequestId",
+				"type": "bytes32"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_personalHash",
+				"type": "string"
+			},
+			{
+				"name": "_claimId",
+				"type": "bytes32"
+			},
+			{
+				"name": "_clauses",
+				"type": "string[]"
+			},
+			{
+				"name": "_conditions",
+				"type": "string[]"
+			},
+			{
+				"name": "_initTimeStamp",
+				"type": "uint256[]"
+			},
+			{
+				"name": "_endTimeStamp",
+				"type": "uint256[]"
+			},
+			{
+				"name": "_status",
+				"type": "uint256[]"
+			}
+		],
+		"name": "changeClaim",
+		"outputs": [
+			{
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_claimId",
+				"type": "bytes32"
+			},
+			{
+				"name": "_conditionId",
+				"type": "uint256"
+			},
+			{
+				"name": "_condition",
+				"type": "string"
+			},
+			{
+				"name": "_initTimeStamp",
+				"type": "uint256"
+			},
+			{
+				"name": "_endTimeStamp",
+				"type": "uint256"
+			},
+			{
+				"name": "_status",
+				"type": "uint256"
+			}
+		],
+		"name": "changeClaimCondition",
+		"outputs": [
+			{
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_claimId",
+				"type": "bytes32"
+			},
+			{
+				"name": "_conditionId",
+				"type": "uint256"
+			},
+			{
+				"name": "_status",
+				"type": "uint256"
+			}
+		],
+		"name": "changeConditionStatus",
+		"outputs": [
+			{
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_address",
+				"type": "address"
+			}
+		],
+		"name": "grantAdmin",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_claimId",
+				"type": "bytes32"
+			},
+			{
+				"name": "_address",
+				"type": "address"
+			}
+		],
+		"name": "grantAllowanceSigner",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "owner",
+				"type": "address"
+			}
+		],
+		"name": "initialize",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_entrada",
+				"type": "uint256"
+			}
+		],
+		"name": "nueva_fun",
+		"outputs": [
+			{
+				"name": "entrada",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_claimId",
+				"type": "bytes32"
+			}
+		],
+		"name": "removeClaim",
+		"outputs": [
+			{
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_address",
+				"type": "address"
+			}
+		],
+		"name": "revokeAdmin",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_claimId",
+				"type": "bytes32"
+			},
+			{
+				"name": "_address",
+				"type": "address"
+			}
+		],
+		"name": "revokeAllowanceSigner",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_claimId",
+				"type": "bytes32"
+			}
+		],
+		"name": "signClaim",
+		"outputs": [
+			{
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_address",
+				"type": "address"
+			}
+		],
+		"name": "transferRoot",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "claimRequestId",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"name": "topic",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"name": "issuer",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "signature",
+				"type": "bytes"
+			},
+			{
+				"indexed": false,
+				"name": "clauses",
+				"type": "string[]"
+			},
+			{
+				"indexed": false,
+				"name": "conditions",
+				"type": "string[]"
+			}
+		],
+		"name": "ClaimRequested",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "claimId",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"name": "clauses",
+				"type": "string[]"
+			},
+			{
+				"indexed": false,
+				"name": "conditions",
+				"type": "string[]"
+			},
+			{
+				"indexed": false,
+				"name": "initTimeStamp",
+				"type": "uint256[]"
+			},
+			{
+				"indexed": false,
+				"name": "endTimeStamp",
+				"type": "uint256[]"
+			},
+			{
+				"indexed": false,
+				"name": "status",
+				"type": "uint256[]"
+			},
+			{
+				"indexed": false,
+				"name": "signer",
+				"type": "address"
+			}
+		],
+		"name": "ContractSigned",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "claimId",
+				"type": "bytes32"
+			},
+			{
+				"indexed": true,
+				"name": "topic",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"name": "issuer",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "signature",
+				"type": "bytes"
+			},
+			{
+				"indexed": false,
+				"name": "clauses",
+				"type": "string[]"
+			},
+			{
+				"indexed": false,
+				"name": "conditions",
+				"type": "string[]"
+			}
+		],
+		"name": "ClaimAdded",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "claimId",
+				"type": "bytes32"
+			},
+			{
+				"indexed": true,
+				"name": "topic",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "signature",
+				"type": "bytes"
+			},
+			{
+				"indexed": false,
+				"name": "clauses",
+				"type": "string[]"
+			},
+			{
+				"indexed": false,
+				"name": "conditions",
+				"type": "string[]"
+			}
+		],
+		"name": "GenericClaimAdded",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "claimId",
+				"type": "bytes32"
+			},
+			{
+				"indexed": true,
+				"name": "topic",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"name": "issuer",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "signature",
+				"type": "bytes"
+			},
+			{
+				"indexed": false,
+				"name": "clauses",
+				"type": "string[]"
+			},
+			{
+				"indexed": false,
+				"name": "conditions",
+				"type": "string[]"
+			}
+		],
+		"name": "ClaimRemoved",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "numero",
+				"type": "uint256"
+			}
+		],
+		"name": "nueva",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "sender",
+				"type": "address"
+			}
+		],
+		"name": "NewContract",
+		"type": "event"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "administrators",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "bytes32"
+			},
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "allowanceEnterprise",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "bytes32"
+			},
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "allowanceSigners",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"name": "claims",
+		"outputs": [
+			{
+				"name": "topic",
+				"type": "uint256"
+			},
+			{
+				"name": "issuer",
+				"type": "address"
+			},
+			{
+				"name": "signature",
+				"type": "bytes"
+			},
+			{
+				"name": "personalHash",
+				"type": "string"
+			},
+			{
+				"name": "signatureStatus",
+				"type": "uint256"
+			},
+			{
+				"name": "num_signers",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_claimId",
+				"type": "bytes32"
+			}
+		],
+		"name": "getClaim",
+		"outputs": [
+			{
+				"name": "topic",
+				"type": "uint256"
+			},
+			{
+				"name": "issuer",
+				"type": "address"
+			},
+			{
+				"name": "signature",
+				"type": "bytes"
+			},
+			{
+				"name": "personalHash",
+				"type": "string"
+			},
+			{
+				"name": "clauses",
+				"type": "string[]"
+			},
+			{
+				"name": "conditions",
+				"type": "string[]"
+			},
+			{
+				"name": "initTimeStamp",
+				"type": "uint256[]"
+			},
+			{
+				"name": "endTimeStamp",
+				"type": "uint256[]"
+			},
+			{
+				"name": "status",
+				"type": "uint256[]"
+			},
+			{
+				"name": "num_signers",
+				"type": "uint256"
+			},
+			{
+				"name": "signers",
+				"type": "address[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_claimId",
+				"type": "bytes32"
+			},
+			{
+				"name": "_conditionId",
+				"type": "uint256"
+			}
+		],
+		"name": "getCondition",
+		"outputs": [
+			{
+				"name": "condition",
+				"type": "string"
+			},
+			{
+				"name": "initTimeStamp",
+				"type": "uint256"
+			},
+			{
+				"name": "endTimeStamp",
+				"type": "uint256"
+			},
+			{
+				"name": "status",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_claimId",
+				"type": "bytes32"
+			}
+		],
+		"name": "getTimestampForContract",
+		"outputs": [
+			{
+				"name": "_initTimeStamp",
+				"type": "uint256[]"
+			},
+			{
+				"name": "_endTimeStamp",
+				"type": "uint256[]"
+			},
+			{
+				"name": "_status",
+				"type": "uint256[]"
+			},
+			{
+				"name": "time",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "initialized",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "root",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "senders",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+]

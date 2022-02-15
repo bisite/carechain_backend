@@ -1,0 +1,47 @@
+# .gitignore file
+
+# Ignore downloaded dependencies
+
+# Certificates
+
+certificates/*.crt
+personal_certificates
+
+node_modules
+
+# Ignore compiled files
+
+dist
+dist-next
+
+# Ignore configuration file
+
+config.json
+
+# Ignore compiled language files
+
+locales/*.json
+locales/conf/*.txt
+static/lang/*.js
+
+# Ignore temp files
+
+temp
+
+# Ignore minified Front-End files
+
+debug-delete.js
+monitor.lock
+
+client-cache.json
+
+client.json
+client.version
+
+# Minified files
+
+static/js/*.min.js
+static/css/*.min.css
+
+
+data/contracts
