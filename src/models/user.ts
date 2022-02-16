@@ -313,7 +313,7 @@ export class User extends DataModel {
     public tpUsername: string;
 
     // Global admin
-    public userType: String; 
+    public userType: string; 
     public banned: boolean;
 
     // Two-factor authentication

@@ -7,7 +7,9 @@ import { Config } from "../../../config";
 import { NOT_FOUND } from "../../../utils/http-utils";
 import { Controller } from "../../controller";
 import { BlockchainController } from "../api-blockchain";
+import { OracleController } from "../api-oracle";
 import { RolesController } from "../api-roles";
+import { SensorsController } from "../api-sensors";
 
 const API_PREFIX = "/api/v1";
 
@@ -28,7 +30,13 @@ export class ApiVersion1Controller extends Controller {
         apiBlockchainController.registerAPI(API_PREFIX, application);
 
         const apiRolesController = new RolesController();
-        apiBlockchainController.registerAPI(API_PREFIX, application);
+        apiRolesController.registerAPI(API_PREFIX, application);
+
+        const apiSensorsController = new SensorsController();
+        apiSensorsController.registerAPI(API_PREFIX, application);
+
+        const apiOracleContoller = new OracleController();
+        apiOracleContoller.registerAPI(API_PREFIX, application);
 
 
         // Documentation

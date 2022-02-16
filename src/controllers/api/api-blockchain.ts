@@ -4,7 +4,7 @@ import { Config } from "../../config";
 import { Monitor } from "../../monitor";
 import { BAD_REQUEST, expressSecurityMeasures, FORBIDDEN, INTERNAL_SERVER_ERROR, noCache, NOT_FOUND, OK } from "../../utils/http-utils";
 import { Controller } from "../controller";
-import { trigger,registerEventLogger, deployContract, addClaimProveedor, addClaimApoderado } from "../../utils/ethereum-utils";
+import { trigger,registerEventLogger, deployContract, addClaimSupplier, addClaimRepresentative } from "../../utils/ethereum-utils";
 import { Wallet } from "../../models/wallet";
 
 
@@ -16,8 +16,8 @@ export class BlockchainController extends Controller{
         application.post(prefix + "/blockchain/grantAllowanceSigner", expressSecurityMeasures(noCache(this.grantAllowanceSigner)))
         application.post(prefix + "/blockchain/revokeAllowanceSigner", expressSecurityMeasures(noCache(this.revokeAllowanceSigner)))
         application.post(prefix + "/blockchain/addClaim", expressSecurityMeasures(noCache(this.addClaim)))
-        application.post(prefix + "/blockchain/addClaimSupplier", expressSecurityMeasures(noCache(this.addClaimProveedor)))
-        application.post(prefix + "/blockchain/addClaimRepresentative", expressSecurityMeasures(noCache(this.addClaimApoderado)))
+        application.post(prefix + "/blockchain/addClaimSupplier", expressSecurityMeasures(noCache(this.addClaimSupplier)))
+        application.post(prefix + "/blockchain/addClaimRepresentative", expressSecurityMeasures(noCache(this.addClaimRepresentative)))
 
         
         
@@ -51,7 +51,7 @@ export class BlockchainController extends Controller{
     /**
      * Gives administrator permissions to an user (wallet address)
      * @route POST /api/v1/blockchain/grantAdmin
-     * @group BLOCKCHAIN
+     * @group Blockchain
      * @param {GrantAdminRequest.model} request.body - Request body
      * @returns {GrantAdminBadRequest.model} 400 - Bad request
      * @returns {GrantAdminResponse.model} 200 - Success
@@ -92,7 +92,7 @@ export class BlockchainController extends Controller{
     /**
      * Remove administrator permissions to an user (wallet address)
      * @route POST /api/v1/blockchain/revokeAdmin
-     * @group BLOCKCHAIN
+     * @group Blockchain
      * @param {RevokeAdminRequest.model} request.body - Request body
      * @returns {RevokeAdminBadRequest.model} 400 - Bad request
      * @returns {RevokeAdminResponse.model} 200 - Success
@@ -134,7 +134,7 @@ export class BlockchainController extends Controller{
     /**
      * Transfers the ownership of the contract
      * @route POST /api/v1/blockchain/transferRoot
-     * @group BLOCKCHAIN
+     * @group Blockchain
      * @param {TransferRootRequest.model} request.body - Request body
      * @returns {TransferRootBadRequest.model} 400 - Bad request
      * @returns {TransferRootResponse.model} 200 - Success
@@ -174,7 +174,7 @@ export class BlockchainController extends Controller{
     /**
      * Return if an account is admin
      * @route GET /api/v1/blockchain/isAdmin
-     * @group BLOCKCHAIN
+     * @group Blockchain
      * @returns {IsAdminBadRequest.model} 400 - Bad request
      * @returns {IsAdminResponse.model} 200 - Success - isAdmin: Boolean
      * @param {IsAdminRequest.model} request.body - Request body
@@ -209,7 +209,7 @@ export class BlockchainController extends Controller{
     /**
      * Return the address of the root
      * @route GET /api/v1/blockchain/root
-     * @group BLOCKCHAIN
+     * @group Blockchain
      * @returns {BlockchainBadRequest.model} 400 - Bad request
      * @returns {BlockchainResponse.model} 200 - Success - root: Address
      */
@@ -242,7 +242,7 @@ export class BlockchainController extends Controller{
     /**
      * Gives permissions to a user to sign a contract
      * @route POST /api/v1/blockchain/grantAllowanceSigner
-     * @group BLOCKCHAIN
+     * @group Blockchain
      * @param {GrantAllowanceSignerRequest.model} request.body - Request body
      * @returns {GrantAllowanceSignerBadRequest.model} 400 - Bad request
      * @returns {GrantAllowanceSignerResponse.model} 200 - Success
@@ -286,7 +286,7 @@ export class BlockchainController extends Controller{
     /**
      * Removes a user's signing permissions
      * @route POST /api/v1/blockchain/revokeAllowanceSigner
-     * @group BLOCKCHAIN
+     * @group Blockchain
      * @param {RevokeAllowanceRequest.model} request.body - Request body
      * @returns {RevokeAllowanceBadRequest.model} 400 - Bad request
      * @returns {RevokeAllowanceResponse.model} 200 - Success
@@ -329,7 +329,7 @@ export class BlockchainController extends Controller{
     /**
      * Return if an account is allowanceSigner
      * @route GET /api/v1/blockchain/isAllowanceSinger
-     * @group BLOCKCHAIN
+     * @group Blockchain
      * @returns {IsAllowanceSignerBadRequest.model} 400 - Bad request
      * @returns IsAllowanceSignerResponse.model} 200 - Success
      * @param {IsAllowanceSignerRequest.model} request.body - Request body
@@ -370,7 +370,7 @@ export class BlockchainController extends Controller{
     /**
      * Returns the data of a claim, either generic or specific
      * @route GET /api/v1/blockchain/getClaim
-     * @group BLOCKCHAIN
+     * @group Blockchain
      * @param {GetClaimSignerRequest.model} request.body - Request body
      * @returns {GetClaimSignerBadRequest.model} 400 - Bad request
      * @returns {GetClaimSignerResponse.model} 200 - Success
@@ -419,7 +419,7 @@ export class BlockchainController extends Controller{
     /**
      * Add specific claim
      * @route POST /api/v1/blockchain/addClaim
-     * @group BLOCKCHAIN
+     * @group Blockchain
      * @param {AddClaimRequest.model} request.body - Request body
      * @returns {AddClaimBadRequest.model} 400 - Bad request
      * @returns {AddClaimResponse.model} 200 - Success
@@ -478,12 +478,12 @@ export class BlockchainController extends Controller{
     /**
      * Add specific claim (supplier)
      * @route POST /api/v1/blockchain/addClaimSupplier
-     * @group BLOCKCHAIN
+     * @group Blockchain
      * @param {AddClaimSupplierRequest.model} request.body - Request body
      * @returns {AddClaimSupplierBadRequest.model} 400 - Bad request
      * @returns {AddClaimSupplierResponse.model} 200 - Success
      */
-    public async addClaimProveedor(request: Express.Request, response: Express.Response) {
+    public async addClaimSupplier(request: Express.Request, response: Express.Response) {
         const address = request.body.address || "";
         const topic = parseInt(request.body.topic || "0");
         const claims = JSON.parse(request.body.claims || "{}")
@@ -501,7 +501,7 @@ export class BlockchainController extends Controller{
             return;
         }
 
-        const tx_hash = await addClaimProveedor(topic, clauses, claims, dateinit, dateend, status, id, pKey);
+        const tx_hash = await addClaimSupplier(topic, clauses, claims, dateinit, dateend, status, id, pKey);
         response.status(OK);
         response.json({ tx_hash: tx_hash });
         return;
@@ -537,12 +537,12 @@ export class BlockchainController extends Controller{
     /**
      * Add generic claim (representative)
      * @route POST /api/v1/blockchain/addClaimRepresentative
-     * @group BLOCKCHAIN
+     * @group Blockchain
      * @param {AddClaimRepresentativeRequest.model} request.body - Request body
      * @returns {AddClaimRepresentativeResponse.model} 400 - Bad request
      * @returns {AddClaimRepresentativeResponse.model} 200 - Success
      */
-    public async addClaimApoderado(request: Express.Request, response: Express.Response) {
+    public async addClaimRepresentative(request: Express.Request, response: Express.Response) {
         const claimId = request.body.claimId || "";
         const address = request.body.address || "";
         const claims = JSON.parse(request.body.claims || "{}")
@@ -562,7 +562,7 @@ export class BlockchainController extends Controller{
             return;
         }
     
-        const tx_hash = await addClaimApoderado(claimId, address, clauses, claims, dateinit, dateend, status, personal_hash, id, signers, pKey);
+        const tx_hash = await addClaimRepresentative(claimId, address, clauses, claims, dateinit, dateend, status, personal_hash, id, signers, pKey);
         response.status(OK);
         response.json({ tx_hash: tx_hash });
         return;
@@ -596,12 +596,12 @@ export class BlockchainController extends Controller{
     /**
      * Modify an existing claim
      * @route POST /api/v1/blockchain/modifyClaim
-     * @group BLOCKCHAIN
+     * @group Blockchain
      * @param {ModifyClaimRequest.model} request.body - Request body
      * @returns {ModifyClaimResponse.model} 400 - Bad request
      * @returns {ModifyClaimResponse.model} 200 - Success
      */
-     public async modifyClaim(request: Express.Request, response: Express.Response) {
+    public async modifyClaim(request: Express.Request, response: Express.Response) {
         
         return;
     }
@@ -627,12 +627,12 @@ export class BlockchainController extends Controller{
     /**
      * A user signs a claim to which he has permissions
      * @route POST /api/v1/blockchain/signClaim
-     * @group BLOCKCHAIN
+     * @group Blockchain
      * @param {SignClaimRequest.model} request.body - claimId and pKey
      * @returns {SignClaimResponse.model} 400 - Bad request
      * @returns {SignClaimResponse.model} 200 - Success
      */
-     public async signClaim(request: Express.Request, response: Express.Response) {
+    public async signClaim(request: Express.Request, response: Express.Response) {
         
         return;
     }
@@ -663,12 +663,12 @@ export class BlockchainController extends Controller{
     /**
      * Changes a condition of an existing claim
      * @route POST /api/v1/blockchain/modifyConditionOfAClaim
-     * @group BLOCKCHAIN
+     * @group Blockchain
      * @param {ModifyConditionOfAClaimRequest.model} request.body - Request body
      * @returns {ModifyConditionOfAClaimResponse.model} 400 - Bad request
      * @returns {ModifyConditionOfAClaimResponse.model} 200 - Success
      */
-     public async modifyConditionOfAClaim(request: Express.Request, response: Express.Response) {
+    public async modifyConditionOfAClaim(request: Express.Request, response: Express.Response) {
         
         return;
     }
@@ -697,7 +697,7 @@ export class BlockchainController extends Controller{
     /**
      * Changes the status of an existing claim
      * @route POST /api/v1/blockchain/changeStatus
-     * @group BLOCKCHAIN
+     * @group Blockchain
      * @param {ChangeStatusRequest.model} request.body - Request body
      * @returns {ChangeStatusResponse.model} 400 - Bad request
      * @returns {ChangeStatusResponse.model} 200 - Success

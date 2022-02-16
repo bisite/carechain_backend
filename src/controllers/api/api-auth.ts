@@ -108,7 +108,6 @@ export class AuthController extends Controller {
             status: "LOGGED_IN",
             uid: user.id,
             account_type: user.type,
-            global_admin: user.globalAdmin,
             username: user.username,
             tfa: user.tfa,
 
@@ -209,7 +208,7 @@ export class AuthController extends Controller {
 
                 response.cookie("x-session-id", session.getSession());
                 response.status(OK);
-                response.json({ uid: user.id, globalAdmin: user.globalAdmin, session_id: session.getSession(), users: dev });
+                response.json({ uid: user.id, session_id: session.getSession(), users: dev });
             } catch (ex) {
                 Monitor.exception(ex);
                 response.status(INTERNAL_SERVER_ERROR);

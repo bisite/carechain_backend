@@ -73,7 +73,7 @@ export class MainWebApplication {
                     swaggerDefinition: {
                         info: {
                             description: 'API documentation',
-                            title: 'Cleverus',
+                            title: 'Carechain',
                             version: '1.0.0',
                         },
                         host: Config.getInstance().getHost(),

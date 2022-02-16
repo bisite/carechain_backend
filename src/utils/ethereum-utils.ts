@@ -119,16 +119,16 @@ export async function deployContract(topic, address, clauses, claims, dateinit, 
 }
 
 
-export async function addClaimProveedor(topic, clauses, claims, dateinit, dateend, status, id, pKey){
+export async function addClaimSupplier(topic, clauses, claims, dateinit, dateend, status, id, pKey){
     const signature = Web3.utils.soliditySha3(blockchainConfiguration.contract_address, 1, JSON.stringify([]));
     const data = [topic, Web3.utils.toHex(signature), clauses, claims, dateinit, dateend, status, id];
-    return await trigger(false, "addClaimProveedor", data, pKey);
+    return await trigger(false, "addClaimSupplier", data, pKey);
 }
 
 
-export async function addClaimApoderado(claimId, address, clauses, claims, dateinit, dateend, status, personal_hash, id, signers, pKey){
+export async function addClaimRepresentative(claimId, address, clauses, claims, dateinit, dateend, status, personal_hash, id, signers, pKey){
     const data = [claimId, address, personal_hash, clauses, claims, dateinit, dateend, status, id, signers];
-    return await trigger(false, "addClaimApoderado", data, pKey);
+    return await trigger(false, "addClaimRepresentative", data, pKey);
 }
 
 export async function registerEventLogger(eventName) {

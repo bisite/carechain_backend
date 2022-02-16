@@ -4,12 +4,16 @@ import { Config } from "../../config";
 import { Monitor } from "../../monitor";
 import { BAD_REQUEST, expressSecurityMeasures, FORBIDDEN, INTERNAL_SERVER_ERROR, noCache, NOT_FOUND, OK } from "../../utils/http-utils";
 import { Controller } from "../controller";
-import { trigger,registerEventLogger, deployContract, addClaimProveedor, addClaimApoderado } from "../../utils/ethereum-utils";
 import { Wallet } from "../../models/wallet";
 
 
 export class RolesController extends Controller{
     public registerAPI(prefix: string, application: Express.Express): any {
+        
+        application.post(prefix + "/roles/newRepresentative", expressSecurityMeasures(noCache(this.newRepresentative)));
+        application.post(prefix + "/roles/revokeRepresentative", expressSecurityMeasures(noCache(this.RevokeRepresentative)));
+        application.post(prefix + "/roles/newSupplier", expressSecurityMeasures(noCache(this.newSupplier)));
+        application.post(prefix + "/roles/revokeSupplier", expressSecurityMeasures(noCache(this.RevokeSupplier)));
         
     }
 
@@ -35,7 +39,7 @@ export class RolesController extends Controller{
     /**
     * Turns a user into a representative
     * @route POST /api/v1/roles/newRepresentative
-    * @group roles
+    * @group Roles
     * @param {NewRepresentativeRequest.model} request.body - Username or email
     * @returns {NewRepresentativeErrorBadRequest.model} 400 - Bad request
     * @returns {NewRepresentativeErrorForbidden.model} 403 - Access denied to the account
@@ -67,7 +71,7 @@ export class RolesController extends Controller{
     /**
     * Revoke a user's representative role
     * @route POST /api/v1/roles/revokeRepresentative
-    * @group roles
+    * @group Roles
     * @param {RevokeRepresentativeRequest.model} request.body - Username or email
     * @returns {RevokeRepresentativeErrorBadRequest.model} 400 - Bad request
     * @returns {RevokeRepresentativeErrorForbidden.model} 403 - Access denied to the account
@@ -99,13 +103,13 @@ export class RolesController extends Controller{
     /**
     * Turns a user into a Supplier
     * @route POST /api/v1/roles/newSupplier
-    * @group roles
+    * @group Roles
     * @param {NewSupplierRequest.model} request.body - Username or email
     * @returns {NewSupplierErrorBadRequest.model} 400 - Bad request
     * @returns {NewSupplierErrorForbidden.model} 403 - Access denied to the account
     * @returns {NewSupplierResponse.model} 200 - Success
     */
-     public async newSupplier(request: Express.Request, response: Express.Response) {
+    public async newSupplier(request: Express.Request, response: Express.Response) {
         
     }
 
@@ -131,7 +135,7 @@ export class RolesController extends Controller{
     /**
     * Revoke a user's Supplier role
     * @route POST /api/v1/roles/revokeSupplier
-    * @group roles
+    * @group Roles
     * @param {SupplierRequest.model} request.body - Username or email
     * @returns {SupplierErrorBadRequest.model} 400 - Bad request
     * @returns {SupplierErrorForbidden.model} 403 - Access denied to the account
