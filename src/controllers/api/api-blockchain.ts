@@ -16,8 +16,8 @@ export class BlockchainController extends Controller{
         application.post(prefix + "/blockchain/grantAllowanceSigner", expressSecurityMeasures(noCache(this.grantAllowanceSigner)))
         application.post(prefix + "/blockchain/revokeAllowanceSigner", expressSecurityMeasures(noCache(this.revokeAllowanceSigner)))
         application.post(prefix + "/blockchain/addClaim", expressSecurityMeasures(noCache(this.addClaim)))
-        application.post(prefix + "/blockchain/addClaimProveedor", expressSecurityMeasures(noCache(this.addClaimProveedor)))
-        application.post(prefix + "/blockchain/addClaimApoderado", expressSecurityMeasures(noCache(this.addClaimApoderado)))
+        application.post(prefix + "/blockchain/addClaimSupplier", expressSecurityMeasures(noCache(this.addClaimProveedor)))
+        application.post(prefix + "/blockchain/addClaimRepresentative", expressSecurityMeasures(noCache(this.addClaimApoderado)))
 
         
         
@@ -29,14 +29,32 @@ export class BlockchainController extends Controller{
         application.get(prefix + "/blockchain/examples", expressSecurityMeasures(noCache(this.examples)))
 
     }
+
+
+    /**
+    * @typedef GrantAdminRequest
+    * @property {string} address - Public addres of the new admin
+    * @property {string} pKey - (Optional) the private key of the transaction signer
+    */
+
+    /**
+    * @typedef GrantAdminBadRequest
+    * @property {string} error_code - Error Code:
+    *  - INVALID_PARAMS: Invalid parameters
+    */
     
     /**
-     * Gives administrator permissions to an address
+    * @typedef GrantAdminResponse
+    * @property {string} tx_hash - The transaction hash
+    */
+
+    /**
+     * Gives administrator permissions to an user (wallet address)
      * @route POST /api/v1/blockchain/grantAdmin
      * @group BLOCKCHAIN
-     * @param {LoginRequest.model} request.body - address and pKey (optional admin private key)
-     * @returns {LoginErrorBadRequest.model} 400 - Bad request
-     * @returns {LoginResponse.model} 200 - Success
+     * @param {GrantAdminRequest.model} request.body - Request body
+     * @returns {GrantAdminBadRequest.model} 400 - Bad request
+     * @returns {GrantAdminResponse.model} 200 - Success
      */
     public async grantAdmin(request: Express.Request, response: Express.Response) {
         const address = request.body.address || "";
@@ -55,12 +73,29 @@ export class BlockchainController extends Controller{
     
 
     /**
-     * Remove administrator permissions to an address
+    * @typedef RevokeAdminRequest
+    * @property {string} address - Public addres of the new admin
+    * @property {string} pKey - (Optional) the private key of the transaction signer
+    */
+
+    /**
+    * @typedef RevokeAdminBadRequest
+    * @property {string} error_code - Error Code:
+    *  - INVALID_PARAMS: Invalid parameters
+    */
+
+    /**
+    * @typedef RevokeAdminResponse
+    * @property {string} tx_hash - The transaction hash
+    */
+
+    /**
+     * Remove administrator permissions to an user (wallet address)
      * @route POST /api/v1/blockchain/revokeAdmin
      * @group BLOCKCHAIN
-     * @param {LoginRequest.model} request.body - address and pKey (optional admin private key)
-     * @returns {LoginErrorBadRequest.model} 400 - Bad request
-     * @returns {LoginResponse.model} 200 - Success
+     * @param {RevokeAdminRequest.model} request.body - Request body
+     * @returns {RevokeAdminBadRequest.model} 400 - Bad request
+     * @returns {RevokeAdminResponse.model} 200 - Success
      */
     public async revokeAdmin(request: Express.Request, response: Express.Response) {
         const address = request.body.address || "";
@@ -78,13 +113,31 @@ export class BlockchainController extends Controller{
     }
     
 
+
+    /**
+    * @typedef TransferRootRequest
+    * @property {string} address - Public addres of the new admin
+    * @property {string} pKey - (Optional) the private key of the transaction signer
+    */
+
+    /**
+    * @typedef TransferRootBadRequest
+    * @property {string} error_code - Error Code:
+    *  - INVALID_PARAMS: Invalid parameters
+    */
+
+    /**
+    * @typedef TransferRootResponse
+    * @property {string} tx_hash - The transaction hash
+    */
+
     /**
      * Transfers the ownership of the contract
      * @route POST /api/v1/blockchain/transferRoot
      * @group BLOCKCHAIN
-     * @param {LoginRequest.model} request.body - address and pKey (optional root private key)
-     * @returns {LoginErrorBadRequest.model} 400 - Bad request
-     * @returns {LoginResponse.model} 200 - Success
+     * @param {TransferRootRequest.model} request.body - Request body
+     * @returns {TransferRootBadRequest.model} 400 - Bad request
+     * @returns {TransferRootResponse.model} 200 - Success
      */
     public async transferRoot(request: Express.Request, response: Express.Response) {
         const address = request.body.address || "";
@@ -103,12 +156,28 @@ export class BlockchainController extends Controller{
     
 
     /**
+    * @typedef IsAdminRequest
+    * @property {string} address - The address to consult if is an administrator
+    */
+
+    /**
+    * @typedef IsAdminBadRequest
+    * @property {string} error_code - Error Code:
+    *  - INVALID_PARAMS: Invalid parameters
+    */
+
+    /**
+    * @typedef IsAdminResponse
+    * @property {boolean} isAdmin - If an address is admin
+    */
+
+    /**
      * Return if an account is admin
      * @route GET /api/v1/blockchain/isAdmin
      * @group BLOCKCHAIN
-     * @returns {LoginErrorBadRequest.model} 400 - Bad request
-     * @returns {LoginResponse.model} 200 - Success
-     * @param {LoginRequest.model} request.body - address
+     * @returns {IsAdminBadRequest.model} 400 - Bad request
+     * @returns {IsAdminResponse.model} 200 - Success - isAdmin: Boolean
+     * @param {IsAdminRequest.model} request.body - Request body
      */
     public async isAdmin(request: Express.Request, response: Express.Response) {
         const address = request.query.address || "";
@@ -127,11 +196,22 @@ export class BlockchainController extends Controller{
 
 
     /**
+    * @typedef BlockchainBadRequest
+    * @property {string} error_code - Error Code:
+    *  - INVALID_PARAMS: Invalid parameters
+    */
+   
+    /**
+    * @typedef BlockchainResponse
+    * @property {string} tx_hash - The transaction hash
+    */
+
+    /**
      * Return the address of the root
      * @route GET /api/v1/blockchain/root
      * @group BLOCKCHAIN
-     * @returns {LoginErrorBadRequest.model} 400 - Bad request
-     * @returns {LoginResponse.model} 200 - Success
+     * @returns {BlockchainBadRequest.model} 400 - Bad request
+     * @returns {BlockchainResponse.model} 200 - Success - root: Address
      */
     public async root(request: Express.Request, response: Express.Response) {
         const temp = await trigger(true, "root", [], "");
@@ -142,12 +222,30 @@ export class BlockchainController extends Controller{
 
 
     /**
-     * Gives signer permissions to an address
+    * @typedef GrantAllowanceSignerRequest
+    * @property {string} claimId - The claim identifier
+    * @property {string} address - The address to give permissions
+    * @property {string} pKey - (Optional) The private key address of the transactions signer
+    */
+
+    /**
+    * @typedef GrantAllowanceSignerBadRequest
+    * @property {string} error_code - Error Code:
+    *  - INVALID_PARAMS: Invalid parameters
+    */
+
+    /**
+    * @typedef GrantAllowanceSignerResponse
+    * @property {string} tx_hash - The transaction hash
+    */
+
+    /**
+     * Gives permissions to a user to sign a contract
      * @route POST /api/v1/blockchain/grantAllowanceSigner
      * @group BLOCKCHAIN
-     * @param {LoginRequest.model} request.body - address and pKey (optional admin private key)
-     * @returns {LoginErrorBadRequest.model} 400 - Bad request
-     * @returns {LoginResponse.model} 200 - Success
+     * @param {GrantAllowanceSignerRequest.model} request.body - Request body
+     * @returns {GrantAllowanceSignerBadRequest.model} 400 - Bad request
+     * @returns {GrantAllowanceSignerResponse.model} 200 - Success
      */
     public async grantAllowanceSigner(request: Express.Request, response: Express.Response) {
         const claimId = request.body.claimId || "";
@@ -168,12 +266,30 @@ export class BlockchainController extends Controller{
 
 
     /**
-     * Revoke signer permissions to an address
+    * @typedef RevokeAllowanceSignerRequest
+    * @property {string} claimId - The claim identifier
+    * @property {string} address - The address to revoke permissions
+    * @property {string} pKey - (Optional) The private key address of the transactions signer
+    */
+
+    /**
+    * @typedef RevokeAllowanceBadRequest
+    * @property {string} error_code - Error Code:
+    *  - INVALID_PARAMS: Invalid parameters
+    */
+
+    /**
+    * @typedef RevokeAllowanceResponse
+    * @property {string} tx_hash - The transaction hash
+    */
+
+    /**
+     * Removes a user's signing permissions
      * @route POST /api/v1/blockchain/revokeAllowanceSigner
      * @group BLOCKCHAIN
-     * @param {LoginRequest.model} request.body - address and pKey (optional admin private key)
-     * @returns {LoginErrorBadRequest.model} 400 - Bad request
-     * @returns {LoginResponse.model} 200 - Success
+     * @param {RevokeAllowanceRequest.model} request.body - Request body
+     * @returns {RevokeAllowanceBadRequest.model} 400 - Bad request
+     * @returns {RevokeAllowanceResponse.model} 200 - Success
      */
     public async revokeAllowanceSigner(request: Express.Request, response: Express.Response) {
         const claimId = request.body.claimId || "";
@@ -192,14 +308,31 @@ export class BlockchainController extends Controller{
         return;
     }
 
+    
+    /**
+    * @typedef IsAllowanceSignerRequest
+    * @property {string} claimId - The claim identifier
+    * @property {string} address - The address to know if is a signer
+    */
+
+    /**
+    * @typedef IsAllowanceSignerBadRequest
+    * @property {string} error_code - Error Code:
+    *  - INVALID_PARAMS: Invalid parameters
+    */
+
+    /**
+    * @typedef IsAllowanceSignerResponse
+    * @property {string} tx_hash - The transaction hash
+    */
 
     /**
      * Return if an account is allowanceSigner
      * @route GET /api/v1/blockchain/isAllowanceSinger
      * @group BLOCKCHAIN
-     * @returns {LoginErrorBadRequest.model} 400 - Bad request
-     * @returns {LoginResponse.model} 200 - Success
-     * @param {LoginRequest.model} request.body - address
+     * @returns {IsAllowanceSignerBadRequest.model} 400 - Bad request
+     * @returns IsAllowanceSignerResponse.model} 200 - Success
+     * @param {IsAllowanceSignerRequest.model} request.body - Request body
      */
     public async isAllowanceSinger(request: Express.Request, response: Express.Response) {
         const address = request.query.address || "";
@@ -218,6 +351,30 @@ export class BlockchainController extends Controller{
     }
 
 
+    /**
+    * @typedef GetClaimSignerRequest
+    * @property {string} claimId - The claim identifier
+    */
+
+    /**
+    * @typedef GetClaimSignerBadRequest
+    * @property {string} error_code - Error Code:
+    *  - INVALID_PARAMS: Invalid parameters
+    */
+
+    /**
+    * @typedef GetClaimSignerResponse
+    * @property {string} tx_hash - The transaction hash
+    */
+
+    /**
+     * Returns the data of a claim, either generic or specific
+     * @route GET /api/v1/blockchain/getClaim
+     * @group BLOCKCHAIN
+     * @param {GetClaimSignerRequest.model} request.body - Request body
+     * @returns {GetClaimSignerBadRequest.model} 400 - Bad request
+     * @returns {GetClaimSignerResponse.model} 200 - Success
+     */
     public async getClaim(request: Express.Request, response: Express.Response) {
         const claimId = request.body.claimId || "";
         
@@ -229,19 +386,43 @@ export class BlockchainController extends Controller{
 
         const temp = await trigger(true, "getClaim", [claimId], "");
         response.status(OK);
-        response.json({ isAdmin: temp });
+        response.json({ claim: temp });
         return;
     }
 
+    /**
+    * @typedef AddClaimRequest
+    * @property {string} address - The public key of the transaction sender
+    * @property {integer} topic - The topic of the clauses
+    * @property {array} claims - Array with the claims
+    * @property {array} clauses - Array with the clauses
+    * @property {array} dateinit - Array wit the date init
+    * @property {array} dateend - Array with the date end
+    * @property {array} status - Array with the status
+    * @property {string} personal_hash - The personal hash of the client
+    * @property {array} signers - Array with the address of the contract signers
+    * @property {string} id - The unique claim identifier
+    * @property {string} pKey - (Optional) The private key address of the transactions signer
+    */
 
+    /**
+    * @typedef AddClaimBadRequest
+    * @property {string} error_code - Error Code:
+    *  - INVALID_PARAMS: Invalid parameters
+    */
+
+    /**
+    * @typedef AddClaimResponse
+    * @property {string} tx_hash - The transaction hash
+    */
 
     /**
      * Add specific claim
      * @route POST /api/v1/blockchain/addClaim
      * @group BLOCKCHAIN
-     * @param {LoginRequest.model} request.body - address and pKey (optional admin private key)
-     * @returns {LoginErrorBadRequest.model} 400 - Bad request
-     * @returns {LoginResponse.model} 200 - Success
+     * @param {AddClaimRequest.model} request.body - Request body
+     * @returns {AddClaimBadRequest.model} 400 - Bad request
+     * @returns {AddClaimResponse.model} 200 - Success
      */
     public async addClaim(request: Express.Request, response: Express.Response) {
         const address = request.body.address || "";
@@ -269,14 +450,38 @@ export class BlockchainController extends Controller{
         return;
     }
 
+        
+    /**
+    * @typedef AddClaimSupplierRequest
+    * @property {string} address - The public key of the transaction sender
+    * @property {integer} topic - The topic of the clauses
+    * @property {array} claims - Array with the claims
+    * @property {array} clauses - Array with the clauses
+    * @property {array} dateinit - Array wit the date init
+    * @property {array} dateend - Array with the date end
+    * @property {array} status - Array with the status
+    * @property {string} id - The unique claim identifier
+    * @property {string} pKey - (Optional) The private key address of the transactions signer
+    */
 
     /**
-     * Add specific claim
-     * @route POST /api/v1/blockchain/addClaimProveedor
+    * @typedef AddClaimSupplierBadRequest
+    * @property {string} error_code - Error Code:
+    *  - INVALID_PARAMS: Invalid parameters
+    */
+
+    /**
+    * @typedef AddClaimSupplierResponse
+    * @property {string} tx_hash - The transaction hash
+    */
+
+    /**
+     * Add specific claim (supplier)
+     * @route POST /api/v1/blockchain/addClaimSupplier
      * @group BLOCKCHAIN
-     * @param {LoginRequest.model} request.body - address and pKey (optional admin private key)
-     * @returns {LoginErrorBadRequest.model} 400 - Bad request
-     * @returns {LoginResponse.model} 200 - Success
+     * @param {AddClaimSupplierRequest.model} request.body - Request body
+     * @returns {AddClaimSupplierBadRequest.model} 400 - Bad request
+     * @returns {AddClaimSupplierResponse.model} 200 - Success
      */
     public async addClaimProveedor(request: Express.Request, response: Express.Response) {
         const address = request.body.address || "";
@@ -304,12 +509,38 @@ export class BlockchainController extends Controller{
 
 
     /**
-     * Add specific claim
-     * @route POST /api/v1/blockchain/addClaimProveedor
+    * @typedef AddClaimRepresentativeRequest
+    * @property {string} claimId - The claim identifier
+    * @property {string} address - The public key of the transaction sender
+    * @property {array} claims - Array with the claims
+    * @property {array} clauses - Array with the clauses
+    * @property {array} dateinit - Array wit the date init
+    * @property {array} dateend - Array with the date end
+    * @property {array} status - Array with the status
+    * @property {string} personal_hash - The personal hash of the client
+    * @property {array} signers - Array with the address of the contract signers
+    * @property {string} id - The unique claim identifier (off chain)
+    * @property {string} pKey - (Optional) The private key address of the transactions signer
+    */
+
+    /**
+    * @typedef AddClaimRepresentativeBadRequest
+    * @property {string} error_code - Error Code:
+    *  - INVALID_PARAMS: Invalid parameters
+    */
+
+    /**
+    * @typedef AddClaimRepresentativeResponse
+    * @property {string} tx_hash - The transaction hash
+    */
+
+    /**
+     * Add generic claim (representative)
+     * @route POST /api/v1/blockchain/addClaimRepresentative
      * @group BLOCKCHAIN
-     * @param {LoginRequest.model} request.body - address and pKey (optional admin private key)
-     * @returns {LoginErrorBadRequest.model} 400 - Bad request
-     * @returns {LoginResponse.model} 200 - Success
+     * @param {AddClaimRepresentativeRequest.model} request.body - Request body
+     * @returns {AddClaimRepresentativeResponse.model} 400 - Bad request
+     * @returns {AddClaimRepresentativeResponse.model} 200 - Success
      */
     public async addClaimApoderado(request: Express.Request, response: Express.Response) {
         const claimId = request.body.claimId || "";
@@ -336,7 +567,146 @@ export class BlockchainController extends Controller{
         response.json({ tx_hash: tx_hash });
         return;
     }
-    
+
+
+    /**
+    * @typedef ModifyClaimRequest
+    * @property {string} claimId - The claim identifier
+    * @property {array} claims - Array with the claims
+    * @property {array} clauses - Array with the clauses
+    * @property {array} dateinit - Array wit the date init
+    * @property {array} dateend - Array with the date end
+    * @property {array} status - Array with the status
+    * @property {string} personal_hash - The personal hash of the client
+    * @property {string} id - The unique claim identifier (off chain)
+    * @property {string} pKey - (Optional) The private key address of the transactions signer
+    */
+
+    /**
+    * @typedef ModifyClaimBadRequest
+    * @property {string} error_code - Error Code:
+    *  - INVALID_PARAMS: Invalid parameters
+    */
+
+    /**
+    * @typedef ModifyClaimResponse
+    * @property {string} tx_hash - The transaction hash
+    */
+
+    /**
+     * Modify an existing claim
+     * @route POST /api/v1/blockchain/modifyClaim
+     * @group BLOCKCHAIN
+     * @param {ModifyClaimRequest.model} request.body - Request body
+     * @returns {ModifyClaimResponse.model} 400 - Bad request
+     * @returns {ModifyClaimResponse.model} 200 - Success
+     */
+     public async modifyClaim(request: Express.Request, response: Express.Response) {
+        
+        return;
+    }
+
+
+    /**
+    * @typedef SignClaimRequest
+    * @property {string} claimId - The claim identifier
+    * @property {string} pKey - (Optional) The private key address of the transactions signer
+    */
+
+    /**
+    * @typedef SignClaimBadRequest
+    * @property {string} error_code - Error Code:
+    *  - INVALID_PARAMS: Invalid parameters
+    */
+
+    /**
+    * @typedef SignClaimResponse
+    * @property {string} tx_hash - The transaction hash
+    */
+
+    /**
+     * A user signs a claim to which he has permissions
+     * @route POST /api/v1/blockchain/signClaim
+     * @group BLOCKCHAIN
+     * @param {SignClaimRequest.model} request.body - claimId and pKey
+     * @returns {SignClaimResponse.model} 400 - Bad request
+     * @returns {SignClaimResponse.model} 200 - Success
+     */
+     public async signClaim(request: Express.Request, response: Express.Response) {
+        
+        return;
+    }
+
+
+    /**
+    * @typedef ModifyConditionOfAClaimRequest
+    * @property {string} claimId - The claim identifier
+    * @property {integer} conditionId - The id of the condition
+    * @property {array} condition - The new condition
+    * @property {string} dateinit - The init time stamp
+    * @property {string} dateend - The end time stamp
+    * @property {string} status - The condition status
+    * @property {string} pKey - (Optional) The private key address of the transactions signer
+    */
+
+    /**
+    * @typedef ModifyConditionOfAClaimBadRequest
+    * @property {string} error_code - Error Code:
+    *  - INVALID_PARAMS: Invalid parameters
+    */
+
+    /**
+    * @typedef ModifyConditionOfAClaimResponse
+    * @property {string} tx_hash - The transaction hash
+    */
+
+    /**
+     * Changes a condition of an existing claim
+     * @route POST /api/v1/blockchain/modifyConditionOfAClaim
+     * @group BLOCKCHAIN
+     * @param {ModifyConditionOfAClaimRequest.model} request.body - Request body
+     * @returns {ModifyConditionOfAClaimResponse.model} 400 - Bad request
+     * @returns {ModifyConditionOfAClaimResponse.model} 200 - Success
+     */
+     public async modifyConditionOfAClaim(request: Express.Request, response: Express.Response) {
+        
+        return;
+    }
+
+
+    /**
+    * @typedef ChangeStatusRequest
+    * @property {string} claimId - The claim identifier
+    * @property {integer} conditionId - The id of the condition
+    * @property {string} newStatus - The new condition status
+    * @property {string} pKey - (Optional) The private key address of the transactions signer
+
+    */
+
+    /**
+    * @typedef ChangeStatusBadRequest
+    * @property {string} error_code - Error Code:
+    *  - INVALID_PARAMS: Invalid parameters
+    */
+
+    /**
+    * @typedef ChangeStatusResponse
+    * @property {string} tx_hash - The transaction hash
+    */
+
+    /**
+     * Changes the status of an existing claim
+     * @route POST /api/v1/blockchain/changeStatus
+     * @group BLOCKCHAIN
+     * @param {ChangeStatusRequest.model} request.body - Request body
+     * @returns {ChangeStatusResponse.model} 400 - Bad request
+     * @returns {ChangeStatusResponse.model} 200 - Success
+     */
+    public async changeStatus(request: Express.Request, response: Express.Response) {
+        
+        return;
+    }
+
 
     public async examples(request: Express.Request, response: Express.Response) {
         //Iniciamos el logger para todos los eventos

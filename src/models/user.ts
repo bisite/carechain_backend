@@ -313,7 +313,7 @@ export class User extends DataModel {
     public tpUsername: string;
 
     // Global admin
-    public globalAdmin: boolean;
+    public userType: String; 
     public banned: boolean;
 
     // Two-factor authentication
@@ -362,7 +362,7 @@ export class User extends DataModel {
         this.picture = data.picture || "";
         this.lastAccess = data.lastAccess || 0;
  
-        this.globalAdmin = true;
+        this.userType = "user";
         this.banned = !!data.banned;
 
         this.tfa = !!data.tfa;
