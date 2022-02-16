@@ -7,6 +7,7 @@ import { Config } from "../../../config";
 import { NOT_FOUND } from "../../../utils/http-utils";
 import { Controller } from "../../controller";
 import { BlockchainController } from "../api-blockchain";
+import { RolesController } from "../api-roles";
 
 const API_PREFIX = "/api/v1";
 
@@ -25,6 +26,10 @@ export class ApiVersion1Controller extends Controller {
         // Register API controllers
         const apiBlockchainController = new BlockchainController();
         apiBlockchainController.registerAPI(API_PREFIX, application);
+
+        const apiRolesController = new RolesController();
+        apiBlockchainController.registerAPI(API_PREFIX, application);
+
 
         // Documentation
         if (!Config.getInstance().isProduction) {

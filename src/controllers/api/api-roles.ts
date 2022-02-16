@@ -8,7 +8,7 @@ import { trigger,registerEventLogger, deployContract, addClaimProveedor, addClai
 import { Wallet } from "../../models/wallet";
 
 
-export class BlockchainController extends Controller{
+export class RolesController extends Controller{
     public registerAPI(prefix: string, application: Express.Express): any {
         
     }
