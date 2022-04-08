@@ -137,8 +137,6 @@ export class MainWebApplication {
                 console.log("Error creating the new sensor data");
                 return;
             }
-
-            console.log(sensorDataCreated);
         });
             
 
