@@ -20,6 +20,9 @@ import { Config } from "./config";
 import { ApiVersion1Controller } from "./controllers/api/v1/api-main";
 import { Monitor } from "./monitor";
 import { INTERNAL_SERVER_ERROR } from "./utils/http-utils";
+import { Sensors } from "./models/sensor";
+import { SensorsData } from "./models/sensorData";
+import { createRandomUID } from "./utils/text-utils";
 
 
 // Express async errors
@@ -102,6 +105,43 @@ export class MainWebApplication {
                 Monitor.error("Cannot load module express-swagger-generator | DO NOT SET production=false when working on production!");
             }
         }
+
+
+        const mqtt = require("mqtt");
+
+        const client = mqtt.connect("mqtt://127.0.0.1:1883");
+
+        client.on("connect", function() {
+            console.log("La conexión al servidor es exitosa");
+            client.subscribe('#', { qos: 1 });
+        });
+
+        client.on("message", async function(top, message) {
+            const sensorID = top;
+            console.log(top);
+            const sensor: Sensors = await Sensors.findSensorByID(sensorID);
+            if (sensor === null){
+                return;
+            }
+
+            const sensorDataCreated: SensorsData = new SensorsData({
+                id: createRandomUID(),
+                sensorId: sensorID,
+                data: message.toString(),
+                timestamp: Date.now()
+            });
+    
+            try {
+                await sensorDataCreated.insert();
+            } catch (ex) {
+                console.log("Error creating the new sensor data");
+                return;
+            }
+
+            console.log(sensorDataCreated);
+        });
+            
+
         // Controllers
         this.registerControllers();
 

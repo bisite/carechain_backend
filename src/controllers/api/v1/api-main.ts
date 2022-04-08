@@ -6,6 +6,7 @@ import Express from "express";
 import { Config } from "../../../config";
 import { NOT_FOUND } from "../../../utils/http-utils";
 import { Controller } from "../../controller";
+import { AuthController } from "../api-auth";
 import { BlockchainController } from "../api-blockchain";
 import { OracleController } from "../api-oracle";
 import { RolesController } from "../api-roles";
@@ -26,6 +27,9 @@ export class ApiVersion1Controller extends Controller {
     
 
         // Register API controllers
+        const apiAuth = new AuthController();
+        apiAuth.registerAPI(API_PREFIX, application);
+
         const apiBlockchainController = new BlockchainController();
         apiBlockchainController.registerAPI(API_PREFIX, application);
 

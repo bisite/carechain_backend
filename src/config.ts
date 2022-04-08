@@ -57,7 +57,7 @@ export class DatabaseConfig {
 
     constructor() {
         this.type = "mongodb";
-        this.databaseName = "loyaltour";
+        this.databaseName = "ontochain";
         this.host = "localhost";
         this.port = 27017;
         this.user = "";
