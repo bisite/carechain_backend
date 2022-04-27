@@ -238,6 +238,7 @@ export class User extends DataModel {
             gender,
             passwordHash: computePasswordHash(password, passwdSalt),
             passwordSalt: passwdSalt,
+            role: 0
         });
 
         try {
@@ -277,6 +278,7 @@ export class User extends DataModel {
 
     public id: string;
     public type: string;
+    public role: number;
 
     // Email/Username and password account
     public email: string;

@@ -2,9 +2,10 @@
 import Express from "express"
 import { Config } from "../../config";
 import { Monitor } from "../../monitor";
-import { BAD_REQUEST, expressSecurityMeasures, FORBIDDEN, INTERNAL_SERVER_ERROR, noCache, NOT_FOUND, OK } from "../../utils/http-utils";
+import { BAD_REQUEST, expressSecurityMeasures, FORBIDDEN, INTERNAL_SERVER_ERROR, noCache, NOT_FOUND, OK, UNAUTHORIZED } from "../../utils/http-utils";
 import { Controller } from "../controller";
 import { Wallet } from "../../models/wallet";
+import { User } from "../../models/user";
 
 
 export class RolesController extends Controller{
@@ -46,7 +47,45 @@ export class RolesController extends Controller{
     * @returns {NewRepresentativeResponse.model} 200 - Success
     */
     public async newRepresentative(request: Express.Request, response: Express.Response) {
-        
+        const auth = await this.auth(request);
+        if (!auth.isRegisteredUser()) {
+            response.status(UNAUTHORIZED);
+            response.end();
+            return;
+        }
+
+        const user = auth.user;
+
+        if (user.role != 2){
+            response.status(UNAUTHORIZED);
+            response.end();
+            return;
+        }
+
+        const userId = request.body.userId || "";
+        const userToUpgrade = await User.findUserByUID(userId);
+
+        if (userToUpgrade === null){
+            response.status(BAD_REQUEST);
+            response.send({error_code: "USER_NOT_FOUND"});
+            return;
+        }
+
+        userToUpgrade.role = 1;
+
+        try {
+            await userToUpgrade.save();
+        } catch (ex) {
+            console.log("UPGRADE_ERROR ");
+            response.status(BAD_REQUEST);
+            response.json({ error_code: "UPGRADE_ERROR" });
+            return;
+        }
+
+
+        response.status(OK);
+        response.json({ "success": true });
+        return;
     }
 
 
@@ -78,7 +117,45 @@ export class RolesController extends Controller{
     * @returns {RevokeRepresentativeResponse.model} 200 - Success
     */
     public async RevokeRepresentative(request: Express.Request, response: Express.Response) {
-        
+        const auth = await this.auth(request);
+        if (!auth.isRegisteredUser()) {
+            response.status(UNAUTHORIZED);
+            response.end();
+            return;
+        }
+
+        const user = auth.user;
+
+        if (user.role != 2){
+            response.status(UNAUTHORIZED);
+            response.end();
+            return;
+        }
+
+        const userId = request.body.userId || "";
+        const userToDowngrade = await User.findUserByUID(userId);
+
+        if (userToDowngrade === null){
+            response.status(BAD_REQUEST);
+            response.send({error_code: "USER_NOT_FOUND"});
+            return;
+        }
+
+        userToDowngrade.role = 0;
+
+        try {
+            await userToDowngrade.save();
+        } catch (ex) {
+            console.log("UPGRADE_ERROR ");
+            response.status(BAD_REQUEST);
+            response.json({ error_code: "UPGRADE_ERROR" });
+            return;
+        }
+
+
+        response.status(OK);
+        response.json({ "success": true });
+        return;
     }
 
 
@@ -110,7 +187,45 @@ export class RolesController extends Controller{
     * @returns {NewSupplierResponse.model} 200 - Success
     */
     public async newSupplier(request: Express.Request, response: Express.Response) {
-        
+        const auth = await this.auth(request);
+        if (!auth.isRegisteredUser()) {
+            response.status(UNAUTHORIZED);
+            response.end();
+            return;
+        }
+
+        const user = auth.user;
+
+        if (user.role != 3){
+            response.status(UNAUTHORIZED);
+            response.end();
+            return;
+        }
+
+        const userId = request.body.userId || "";
+        const userToUpgrade = await User.findUserByUID(userId);
+
+        if (userToUpgrade === null){
+            response.status(BAD_REQUEST);
+            response.send({error_code: "USER_NOT_FOUND"});
+            return;
+        }
+
+        userToUpgrade.role = 2;
+
+        try {
+            await userToUpgrade.save();
+        } catch (ex) {
+            console.log("UPGRADE_ERROR ");
+            response.status(BAD_REQUEST);
+            response.json({ error_code: "UPGRADE_ERROR" });
+            return;
+        }
+
+
+        response.status(OK);
+        response.json({ "success": true });
+        return;
     }
 
 
