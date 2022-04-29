@@ -36,7 +36,7 @@
     },
     "database": {
         "type": "mongodb",
-        "name": "loyaltour",
+        "name": "ontochain",
         "host": "localhost",
         "port": "27017",
         "user": "root",
