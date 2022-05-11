@@ -6,6 +6,9 @@ import { BAD_REQUEST, expressSecurityMeasures, FORBIDDEN, INTERNAL_SERVER_ERROR,
 import { Controller } from "../controller";
 import { trigger,registerEventLogger, deployContract, addClaimSupplier, addClaimRepresentative } from "../../utils/ethereum-utils";
 import { Wallet } from "../../models/wallet";
+import { json } from "body-parser";
+import { Microservice } from "../../models/microservice";
+import { createRandomUID } from "../../utils/text-utils";
 
 
 export class BlockchainController extends Controller{
@@ -15,7 +18,7 @@ export class BlockchainController extends Controller{
         application.post(prefix + "/blockchain/root/transfer", expressSecurityMeasures(noCache(this.transferRoot)))
         application.post(prefix + "/blockchain/claim/grantAllowanceSigner", expressSecurityMeasures(noCache(this.grantAllowanceSigner)))
         application.post(prefix + "/blockchain/claim/revokeAllowanceSigner", expressSecurityMeasures(noCache(this.revokeAllowanceSigner)))
-        application.post(prefix + "/blockchain/representative/addSpecificClaim", expressSecurityMeasures(noCache(this.addClaim)))
+        application.post(prefix + "/blockchain/representative/addSpecificClaim", noCache(this.addClaim))
         application.post(prefix + "/blockchain/supplier/addClaimSupplier", expressSecurityMeasures(noCache(this.addClaimSupplier)))
         application.post(prefix + "/blockchain/representative/addGenericClaim", expressSecurityMeasures(noCache(this.addClaimRepresentative)))
 
@@ -186,10 +189,10 @@ export class BlockchainController extends Controller{
     * @property {integer} topic - The topic of the clauses
     * @property {array} claims - Array with the claims
     * @property {array} clauses - Array with the clauses
-    * @property {array} dateinit - Array wit the date init
-    * @property {array} dateend - Array with the date end
+    * @property {array} dateInit - Array wit the date init
+    * @property {array} dateEnd - Array with the date end
     * @property {array} status - Array with the status
-    * @property {string} personal_hash - The personal hash of the client
+    * @property {string} personalHash - The personal hash of the client
     * @property {array} signers - Array with the address of the contract signers
     * @property {string} id - The unique claim identifier
     * @property {string} pKey - (Optional) The private key address of the transactions signer
@@ -217,24 +220,77 @@ export class BlockchainController extends Controller{
     public async addClaim(request: Express.Request, response: Express.Response) {
         const address = request.body.address || "";
         const topic = parseInt(request.body.topic || "0");
-        const claims = JSON.parse(request.body.claims || "{}");
-        const clauses = JSON.parse(request.body.clauses || "{}");
-        const dateinit = JSON.parse(request.body.dateinit || "{}");
-        const dateend = JSON.parse(request.body.dateend || "{}");
-        const status = JSON.parse(request.body.status || "{}");
-        const personal_hash = request.body.personal_hash || "";
-        const signers = JSON.parse(request.body.signers || "{}");
+        const claims = request.body.claims || "[]";
+        const clauses = request.body.clauses || "[]";
+        const dateinit = request.body.dateInit || "[]";
+        const dateend = request.body.dateEnd || "[]";
+        const status = request.body.status || "[]";
+        const personal_hash = request.body.personalHash || "";
+        const signers = request.body.signers || "[]";
         const id = parseInt(request.body.id || "0");
         
         const pKey = request.body.pKey || "";
+        
 
         if (!address || !topic || !claims || !clauses || !dateinit || !dateend || !status || !personal_hash || !signers || !id) {
+            response.status(BAD_REQUEST);
+            response.json({ error_code: "MISSING_PARAMS" });
+            return;
+        }
+
+
+        const totallength = claims.length + clauses.length;
+
+        if ((dateinit.length !== totallength) || (dateend.length !== totallength) || (status.length !== totallength)){
             response.status(BAD_REQUEST);
             response.json({ error_code: "INVALID_PARAMS" });
             return;
         }
 
+
+        // Claims y clauses tienen que ser un array de strings
+        // Las claims serán simplemente texto
+        // Las las clausulas deberán ser un JSON-string, en el que se contenga el id del sensor al que hacen referencia, el tipo de valor, así como el valor máximo y mínimo aceptado
+        // El array de estados solamente hará referencia a las claims y las clauses. Tomando el valor 1 si es correcto, o el valor 0 si es incorrecto
+
+        for (const temp of clauses){
+            const data = JSON.parse(temp);
+
+            if ((!('sensorID' in data)) || (!('valueType' in data)) || (!('maxValue' in data)) || (!('minValue' in data))){
+                response.status(BAD_REQUEST);
+                response.json({ error_code: "MISSING_CLAUSES_PARAMS" });
+                return;
+            }
+        }
+
         const tx_hash = await deployContract(topic, address, clauses, claims, dateinit, dateend, status, personal_hash, signers, id, pKey);
+
+        const microserviceCreate: Microservice = new Microservice({
+            id: id,
+            uniqueID: createRandomUID(),
+            txHash: tx_hash,
+            claimId: "",
+            topic: topic,
+            address: address,
+            clauses: JSON.stringify(clauses),
+            claims: JSON.stringify(claims),
+            dateInit: JSON.stringify(dateinit),
+            dateEnd: JSON.stringify(dateend),
+            status: JSON.stringify(status),
+            personalHash: JSON.stringify(personal_hash),
+            signers: JSON.stringify(signers)
+        });
+
+        try {
+            await microserviceCreate.insert();
+        } catch (ex) {
+            console.log("Error creating the microservice sensor");
+            response.status(BAD_REQUEST);
+            response.json({ error_code: "MICROSERVICE_ERROR" });
+            return;
+        }
+
+        
         response.status(OK);
         response.json({ tx_hash: tx_hash });
         return;

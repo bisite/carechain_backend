@@ -56,7 +56,7 @@ export class RolesController extends Controller{
 
         const user = auth.user;
 
-        if (user.role != 2){
+        if (user.role !== 2){
             response.status(UNAUTHORIZED);
             response.end();
             return;
@@ -126,7 +126,7 @@ export class RolesController extends Controller{
 
         const user = auth.user;
 
-        if (user.role != 2){
+        if (user.role !== 2){
             response.status(UNAUTHORIZED);
             response.end();
             return;
@@ -196,7 +196,7 @@ export class RolesController extends Controller{
 
         const user = auth.user;
 
-        if (user.role != 3){
+        if (user.role !== 3){
             response.status(UNAUTHORIZED);
             response.end();
             return;

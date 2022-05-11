@@ -19,13 +19,11 @@ export class SensorsController extends Controller{
         
         
         application.get(prefix + "/sensors/get/:sensorID", expressSecurityMeasures(noCache(this.getSensor)));
-        
     }
 
     
     /**
     * @typedef RegisterSensorRequest
-    * @property {string} claimID - The identifier of the associated claim
     * @property {string} WoTTDDJson - The data JSON
     */
 
@@ -71,9 +69,9 @@ export class SensorsController extends Controller{
             jsonParsed = JSON.parse(WoTTDDJson);
             console.log(jsonParsed);
         } catch (ex) {
-            console.log("Error in the WoTTDDJson");
+            console.log("JSON parse error");
             response.status(BAD_REQUEST);
-            response.json({ error_code: "WoTTDDJson_ERROR" });
+            response.json({ error_code: "WoTTDDJson_parse_ERROR" });
             return;
         }
 
@@ -81,7 +79,7 @@ export class SensorsController extends Controller{
         if ((!('url' in jsonParsed)) || (!('name' in jsonParsed)) || (!('dataType' in jsonParsed)) || (!('auth' in jsonParsed))){
             console.log("Error in the WoTTDDJson");
             response.status(BAD_REQUEST);
-            response.json({ error_code: "WoTTDDJson_ERROR" });
+            response.json({ error_code: "WoTTDDJson_PARAMS_ERROR" });
             return;
         }
 
@@ -107,7 +105,7 @@ export class SensorsController extends Controller{
             return;
         }
         response.status(OK);
-        response.json({ claimID: sensorCreated.id });
+        response.json({ sensorID: sensorCreated.id });
         return;
     }
 
@@ -234,7 +232,7 @@ export class SensorsController extends Controller{
 
     /**
     * @typedef addSensorDataRequest
-    * @property {string} sensorID - The identifier of the associated claim
+    * @property {string} sensorID - The identifier of the associated sensor
     * @property {string} data - The data JSON
     */
 
@@ -306,7 +304,7 @@ export class SensorsController extends Controller{
 
     /**
     * @typedef addSensorDataRequest
-    * @property {string} sensorID - The identifier of the associated claim
+    * @property {string} sensorID - The identifier of the associated sensor
     * @property {string} data - The data JSON
     */
 

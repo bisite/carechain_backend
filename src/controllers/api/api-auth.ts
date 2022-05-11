@@ -372,7 +372,7 @@ export class AuthController extends Controller {
     *  - CAPTCHA: Invalid captcha
     *  - EMAIL_INVALID: Invalid email
     *  - EMAIL_IN_USE: Email is in use
-    *  - UERNAME_INVALID: Invalid username
+    *  - USERNAME_INVALID: Invalid username
     *  - USERNAME_IN_USE: Username in use
     *  - WEAK_PASSWORD: Password too short
     */
@@ -413,7 +413,7 @@ export class AuthController extends Controller {
 
         if (!username || !User.validateUserName(username)) {
             response.status(BAD_REQUEST);
-            response.json({ error_code: "UERNAME_INVALID" });
+            response.json({ error_code: "USERNAME_INVALID" });
             return;
         }
 

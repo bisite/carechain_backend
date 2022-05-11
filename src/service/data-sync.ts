@@ -13,6 +13,7 @@ import { Monitor } from "../monitor";
 import { toISODate, hexToBase64, hexNoPrefix, hexToUTF8, createRandomUID } from "../utils/text-utils";
 import Web3 from "web3";
 import { from } from "form-data";
+import { Microservice } from "../models/microservice";
 
 const LAST_BLOCK_VAR = "last_processed_block";
 
@@ -40,6 +41,21 @@ async function eventContractHandler(event, time: string, contract: string) {
     //const name = event.name;
     //await AllTransaction.setTransaction(event.txHash, name, idElement, time);
     //await EventTransaction.setEventTransaction(name + "-" + idElement, name, idElement, event.txHash, event.txHash);
+
+    const microservice = await Microservice.findMicroserviceDataByTXHash(event.transactionHash);
+
+    console.log(event.transactionHash);
+    console.log(microservice);
+
+    if (microservice !== null){
+        microservice.claimId = event.returnValues["0"];
+        try {
+            await microservice.save();
+        } catch (ex) {
+        }
+        
+    }
+
     debugEvent(event, time, contract);
 }
 
