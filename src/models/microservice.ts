@@ -86,4 +86,10 @@ export class Microservice extends DataModel {
         );
         return micro[0] || null;
     }
+
+
+    public static async findAllMicroservices(): Promise<Microservice[]> {
+        return await Microservice.finder.find(DataFilter.any());
+    }
+
 }

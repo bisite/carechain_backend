@@ -29,6 +29,9 @@ export class BlockchainController extends Controller{
         application.get(prefix + "/blockchain/claim/isAllowanceSinger", expressSecurityMeasures(noCache(this.isAllowanceSinger)))
         application.get(prefix + "/blockchain/claim/get", expressSecurityMeasures(noCache(this.getClaim)))
 
+        application.get(prefix + "/blockchain/microservices/get", expressSecurityMeasures(noCache(this.getMicroservices)))
+
+
         application.get(prefix + "/blockchain/examples", expressSecurityMeasures(noCache(this.examples)))
 
     }
@@ -764,6 +767,63 @@ export class BlockchainController extends Controller{
      */
     public async changeStatus(request: Express.Request, response: Express.Response) {
         
+        return;
+    }
+
+
+    /**
+    * @typedef GetMicroservicesRequest
+    */
+
+    /**
+    * @typedef GetMicroservices
+    * @property {string} error_code - Error Code:
+    *  - INVALID_PARAMS: Invalid parameters
+    */
+
+    /**
+    * @typedef GetMicroservices
+    * @property {string} error_code - Error Code:
+    *  - INVALID_CREDENTIALS: Invalid credentials
+    */
+
+
+    /**
+    * Get all the microservices
+    * @route GET /api/v1/microservices/get
+    * @group Sensor
+    * @returns {DeploySensorBadRequest.model} 400 - Bad request
+    * @returns {DeploySensorErrorForbidden.model} 403 - Access denied to the account
+    * @returns 200 - Success
+    */
+    public async getMicroservices(request: Express.Request, response: Express.Response) {
+
+        const microservices: Microservice[] = await Microservice.findAllMicroservices();
+
+        console.log(microservices);
+
+        const temp = []
+
+        for (const micro of microservices){
+            temp.push({
+                id: micro.id,
+                uniqueID: micro.uniqueID,
+                txHash: micro.txHash,
+                claimId: micro.claimId,
+                topic: micro.topic,
+                address: micro.address,
+                clauses: micro.clauses,
+                claims: micro.claims,
+                dateInit: micro.dateInit,
+                dateEnd: micro.dateEnd,
+                status: micro.status,
+                personalHash: micro.personalHash,
+                signers: micro.signers
+            })
+        }
+
+        response.status(OK);
+        response.json(temp);
         return;
     }
 
