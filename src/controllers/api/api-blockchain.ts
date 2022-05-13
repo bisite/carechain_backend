@@ -220,13 +220,13 @@ export class BlockchainController extends Controller{
     public async addClaim(request: Express.Request, response: Express.Response) {
         const address = request.body.address || "";
         const topic = parseInt(request.body.topic || "0");
-        const claims = request.body.claims || "[]";
-        const clauses = request.body.clauses || "[]";
-        const dateinit = request.body.dateInit || "[]";
-        const dateend = request.body.dateEnd || "[]";
-        const status = request.body.status || "[]";
+        const claims = request.body.claims || [];
+        const clauses = request.body.clauses || [];
+        const dateinit = request.body.dateInit || [];
+        const dateend = request.body.dateEnd || [];
+        const status = request.body.status || [];
         const personal_hash = request.body.personalHash || "";
-        const signers = request.body.signers || "[]";
+        const signers = request.body.signers || [];
         const id = parseInt(request.body.id || "0");
         
         const pKey = request.body.pKey || "";
@@ -252,7 +252,7 @@ export class BlockchainController extends Controller{
         // Las claims serán simplemente texto
         // Las las clausulas deberán ser un JSON-string, en el que se contenga el id del sensor al que hacen referencia, el tipo de valor, así como el valor máximo y mínimo aceptado
         // El array de estados solamente hará referencia a las claims y las clauses. Tomando el valor 1 si es correcto, o el valor 0 si es incorrecto
-
+        
         for (const temp of clauses){
             const data = JSON.parse(temp);
 
@@ -277,7 +277,7 @@ export class BlockchainController extends Controller{
             dateInit: JSON.stringify(dateinit),
             dateEnd: JSON.stringify(dateend),
             status: JSON.stringify(status),
-            personalHash: JSON.stringify(personal_hash),
+            personalHash: personal_hash,
             signers: JSON.stringify(signers)
         });
 
