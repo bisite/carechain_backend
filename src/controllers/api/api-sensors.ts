@@ -279,7 +279,7 @@ export class SensorsController extends Controller{
         }
 
         response.status(OK);
-        response.json({"sensors": temp});
+        response.json(temp);
         return;
     }
 
