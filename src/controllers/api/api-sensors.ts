@@ -19,6 +19,7 @@ export class SensorsController extends Controller{
         
         
         application.get(prefix + "/sensors/get/:sensorID", expressSecurityMeasures(noCache(this.getSensor)));
+        application.get(prefix + "/sensors/get_all", expressSecurityMeasures(noCache(this.getAllSensors)));        
     }
 
     
@@ -228,6 +229,60 @@ export class SensorsController extends Controller{
         response.json({ "sensorID": sensor.id, "WoTTDDJson": sensor.WoTTDDJson, "deployed": sensor.deployed });
         return;
     }
+
+
+    /**
+    * @typedef GetSensorsRequest
+    */
+
+
+
+    /**
+    * @typedef GetSensorsBadRequest
+    * @property {string} error_code - Error Code:
+    *  - INVALID_PARAMS: Invalid parameters
+    */
+
+    /**
+    * @typedef GetSensorsErrorForbidden
+    * @property {string} error_code - Error Code:
+    *  - INVALID_CREDENTIALS: Invalid credentials
+    */
+
+
+    /**
+    * Get all sensors data
+    * @route GET /api/v1/sensors/get_all
+    * @group Sensor
+    * @param {DeploySensorRequest.model} request.body -
+    * @returns {DeploySensorBadRequest.model} 400 - Bad request
+    * @returns {DeploySensorErrorForbidden.model} 403 - Access denied to the account
+    * @returns 200 - Success
+    */
+    public async getAllSensors(request: Express.Request, response: Express.Response) {
+
+
+        const sensor: Sensors[] = await Sensors.findAllSensors();
+
+        const temp = []
+
+        for (const sen of sensor){
+            temp.push({
+                id: sen.id,
+                deployed: sen.deployed,
+                WoTTDDJson: sen.WoTTDDJson,
+                url: sen.url,
+                name: sen.name,
+                dataType: sen.dataType,
+                auth: sen.auth,
+            })
+        }
+
+        response.status(OK);
+        response.json({"sensors": temp});
+        return;
+    }
+
 
 
     /**

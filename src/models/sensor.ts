@@ -54,4 +54,9 @@ export class Sensors extends DataModel {
         const sens = await Sensors.finder.findByKey(id);
         return sens;
     }
+
+
+    public static async findAllSensors(): Promise<Sensors[]> {
+        return await Sensors.finder.find(DataFilter.any());
+    }
 }

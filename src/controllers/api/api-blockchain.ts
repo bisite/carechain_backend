@@ -800,8 +800,6 @@ export class BlockchainController extends Controller{
 
         const microservices: Microservice[] = await Microservice.findAllMicroservices();
 
-        console.log(microservices);
-
         const temp = []
 
         for (const micro of microservices){
