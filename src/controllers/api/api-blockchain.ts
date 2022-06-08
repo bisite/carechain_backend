@@ -19,8 +19,8 @@ export class BlockchainController extends Controller{
         application.post(prefix + "/blockchain/claim/grantAllowanceSigner", expressSecurityMeasures(noCache(this.grantAllowanceSigner)))
         application.post(prefix + "/blockchain/claim/revokeAllowanceSigner", expressSecurityMeasures(noCache(this.revokeAllowanceSigner)))
         application.post(prefix + "/blockchain/representative/addSpecificClaim", noCache(this.addClaim))
-        application.post(prefix + "/blockchain/supplier/addClaimSupplier", expressSecurityMeasures(noCache(this.addClaimSupplier)))
-        application.post(prefix + "/blockchain/representative/addGenericClaim", expressSecurityMeasures(noCache(this.addClaimRepresentative)))
+        application.post(prefix + "/blockchain/representative/addClaim", noCache(this.addClaimRepresentative))
+        application.post(prefix + "/blockchain/supplier/addGenericClaim", noCache(this.addClaimSupplier))
 
         
         
@@ -30,6 +30,7 @@ export class BlockchainController extends Controller{
         application.get(prefix + "/blockchain/claim/get", expressSecurityMeasures(noCache(this.getClaim)))
 
         application.get(prefix + "/blockchain/microservices/get", expressSecurityMeasures(noCache(this.getMicroservices)))
+        application.get(prefix + "/blockchain/microservices/get_templates", expressSecurityMeasures(noCache(this.getMicroservicesTemplates)))
 
 
         application.get(prefix + "/blockchain/examples", expressSecurityMeasures(noCache(this.examples)))
@@ -334,27 +335,78 @@ export class BlockchainController extends Controller{
      * @returns {AddClaimRepresentativeResponse.model} 400 - Bad request
      * @returns {AddClaimRepresentativeResponse.model} 200 - Success
      */
-    public async addClaimRepresentative(request: Express.Request, response: Express.Response) {
-        const claimId = request.body.claimId || "";
+    public async addClaimSupplier(request: Express.Request, response: Express.Response) {
+        const topic = parseInt(request.body.topic || "0");
+        const templateName = request.body.templateName || "";
         const address = request.body.address || "";
-        const claims = JSON.parse(request.body.claims || "{}")
-        const clauses = JSON.parse(request.body.clauses || "{}")
-        const dateinit = JSON.parse(request.body.dateinit || "{}")
-        const dateend = JSON.parse(request.body.dateend || "{}")
-        const personal_hash = request.body.personal_hash || "";
-        const signers = JSON.parse(request.body.signers || "{}");
-        const status = JSON.parse(request.body.status || "{}")
+        const claims = request.body.claims || [];
+        const clauses = request.body.clauses || [];
+        const dateinit = request.body.dateInit || [];
+        const dateend = request.body.dateEnd || [];
+        const status = request.body.status || [];
+        const personal_hash = request.body.personalHash || "";
+        const signers = request.body.signers || [];
         const id = parseInt(request.body.id || "0");
-            
+        
         const pKey = request.body.pKey || "";
-    
-        if (!address || !claimId || !claims || !clauses || !dateinit || !dateend || !status || !personal_hash || !signers || !id) {
+        
+
+        if (!address || !topic || !claims || !clauses || !dateinit || !dateend || !status || !personal_hash || !signers || !id) {
+            response.status(BAD_REQUEST);
+            response.json({ error_code: "MISSING_PARAMS" });
+            return;
+        }
+
+
+        const totallength = claims.length + clauses.length;
+
+        if ((dateinit.length !== totallength) || (dateend.length !== totallength) || (status.length !== totallength)){
             response.status(BAD_REQUEST);
             response.json({ error_code: "INVALID_PARAMS" });
             return;
         }
-    
-        const tx_hash = await addClaimRepresentative(claimId, address, clauses, claims, dateinit, dateend, status, personal_hash, id, signers, pKey);
+
+
+        for (const temp of clauses){
+            const data = JSON.parse(temp);
+
+            if ((!('sensorID' in data)) || (!('valueType' in data)) || (!('maxValue' in data)) || (!('minValue' in data))){
+                response.status(BAD_REQUEST);
+                response.json({ error_code: "MISSING_CLAUSES_PARAMS" });
+                return;
+            }
+        }
+
+        const tx_hash = await addClaimSupplier(topic, clauses, claims, dateinit, dateend, status, id, pKey);
+
+        const microserviceCreate: Microservice = new Microservice({
+            id: id,
+            uniqueID: createRandomUID(),
+            txHash: tx_hash,
+            claimId: "",
+            topic: topic,
+            address: address,
+            clauses: JSON.stringify(clauses),
+            claims: JSON.stringify(claims),
+            dateInit: JSON.stringify(dateinit),
+            dateEnd: JSON.stringify(dateend),
+            status: JSON.stringify(status),
+            personalHash: personal_hash,
+            signers: JSON.stringify(signers),
+            template: true,
+            name: templateName
+        });
+
+        try {
+            await microserviceCreate.insert();
+        } catch (ex) {
+            console.log("Error creating the microservice sensor");
+            response.status(BAD_REQUEST);
+            response.json({ error_code: "MICROSERVICE_ERROR" });
+            return;
+        }
+
+        
         response.status(OK);
         response.json({ tx_hash: tx_hash });
         return;
@@ -393,25 +445,86 @@ export class BlockchainController extends Controller{
      * @returns {AddClaimSupplierBadRequest.model} 400 - Bad request
      * @returns {AddClaimSupplierResponse.model} 200 - Success
      */
-    public async addClaimSupplier(request: Express.Request, response: Express.Response) {
-        const address = request.body.address || "";
+    public async addClaimRepresentative(request: Express.Request, response: Express.Response) {
         const topic = parseInt(request.body.topic || "0");
-        const claims = JSON.parse(request.body.claims || "{}")
-        const clauses = JSON.parse(request.body.clauses || "{}")
-        const dateinit = JSON.parse(request.body.dateinit || "{}")
-        const dateend = JSON.parse(request.body.dateend || "{}")
-        const status = JSON.parse(request.body.status || "{}")
+        const templateName = request.body.templateName || "";
+        const address = request.body.address || "";
+        const claims = request.body.claims || [];
+        const clauses = request.body.clauses || [];
+        const dateinit = request.body.dateInit || [];
+        const dateend = request.body.dateEnd || [];
+        const status = request.body.status || [];
+        const personal_hash = request.body.personalHash || "";
+        const signers = request.body.signers || [];
         const id = parseInt(request.body.id || "0");
         
         const pKey = request.body.pKey || "";
+        
 
-        if (!address || !topic || !claims || !clauses || !dateinit || !dateend || !status || !id) {
+        if (!address || !topic || !claims || !clauses || !dateinit || !dateend || !status || !personal_hash || !signers || !id) {
+            response.status(BAD_REQUEST);
+            response.json({ error_code: "MISSING_PARAMS" });
+            return;
+        }
+
+
+        const totallength = claims.length + clauses.length;
+
+        if ((dateinit.length !== totallength) || (dateend.length !== totallength) || (status.length !== totallength)){
             response.status(BAD_REQUEST);
             response.json({ error_code: "INVALID_PARAMS" });
             return;
         }
 
-        const tx_hash = await addClaimSupplier(topic, clauses, claims, dateinit, dateend, status, id, pKey);
+
+        for (const temp of clauses){
+            const data = JSON.parse(temp);
+
+            if ((!('sensorID' in data)) || (!('valueType' in data)) || (!('maxValue' in data)) || (!('minValue' in data))){
+                response.status(BAD_REQUEST);
+                response.json({ error_code: "MISSING_CLAUSES_PARAMS" });
+                return;
+            }
+        }
+
+        const claim = await Microservice.findMicroserviceByName(templateName);
+
+        if (claim === null){
+            response.status(BAD_REQUEST);
+            response.json({ error_code: "TEMPLATE_NOT_FOUND" });
+            return;
+        }
+
+        const tx_hash = await addClaimRepresentative(claim.claimId, address, clauses, claims, dateinit, dateend, status, personal_hash, id, signers, pKey)
+
+        const microserviceCreate: Microservice = new Microservice({
+            id: id,
+            uniqueID: createRandomUID(),
+            txHash: tx_hash,
+            claimId: "",
+            topic: topic,
+            address: address,
+            clauses: JSON.stringify(JSON.parse(claim.clauses).concat(clauses)),
+            claims: JSON.stringify(JSON.parse(claim.claims).concat(claims)),
+            dateInit: JSON.stringify(JSON.parse(claim.dateInit).concat(dateinit)),
+            dateEnd: JSON.stringify(JSON.parse(claim.dateEnd).concat(dateend)),
+            status: JSON.stringify(JSON.parse(claim.status).concat(status)),
+            personalHash: personal_hash,
+            signers: JSON.stringify(JSON.parse(claim.signers).concat(signers)),
+            template: false
+        });
+        
+        
+        try {
+            await microserviceCreate.insert();
+        } catch (ex) {
+            console.log("Error creating the microservice sensor");
+            response.status(BAD_REQUEST);
+            response.json({ error_code: "MICROSERVICE_ERROR" });
+            return;
+        }
+
+        
         response.status(OK);
         response.json({ tx_hash: tx_hash });
         return;
@@ -798,7 +911,7 @@ export class BlockchainController extends Controller{
     */
     public async getMicroservices(request: Express.Request, response: Express.Response) {
 
-        const microservices: Microservice[] = await Microservice.findAllMicroservices();
+        const microservices: Microservice[] = await Microservice.findMicroservice();
 
         const temp = []
 
@@ -817,6 +930,37 @@ export class BlockchainController extends Controller{
                 status: micro.status,
                 personalHash: micro.personalHash,
                 signers: micro.signers
+            })
+        }
+
+        response.status(OK);
+        response.json(temp);
+        return;
+    }
+
+
+    public async getMicroservicesTemplates(request: Express.Request, response: Express.Response) {
+
+        const microservices: Microservice[] = await Microservice.findMicroserviceTemplate();
+
+        const temp = []
+
+        for (const micro of microservices){
+            temp.push({
+                id: micro.id,
+                uniqueID: micro.uniqueID,
+                txHash: micro.txHash,
+                claimId: micro.claimId,
+                topic: micro.topic,
+                address: micro.address,
+                clauses: micro.clauses,
+                claims: micro.claims,
+                dateInit: micro.dateInit,
+                dateEnd: micro.dateEnd,
+                status: micro.status,
+                personalHash: micro.personalHash,
+                signers: micro.signers,
+                name: micro.name
             })
         }
 

@@ -370,6 +370,8 @@ export class User extends DataModel {
         this.tfa = !!data.tfa;
         this.tfaSecret = data.tfaSecret || "";
 
+        this.role = data.role || 0;
+
         this.created = parseInt(data.created, 10) || 0;
 
         this.init();

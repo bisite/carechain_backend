@@ -35,6 +35,8 @@ export class Microservice extends DataModel {
     public status: string;
     public personalHash: string;
     public signers: string;
+    public template: boolean;
+    public name: string;
     public id: string;
 
     // Constructor
@@ -55,6 +57,8 @@ export class Microservice extends DataModel {
         this.status =  data.status || "";
         this.personalHash =  data.personalHash || "";
         this.signers =  data.signers || "";
+        this.template = data.template || false;
+        this.name = data.name || "";
         
         this.init();
     }
@@ -90,6 +94,31 @@ export class Microservice extends DataModel {
 
     public static async findAllMicroservices(): Promise<Microservice[]> {
         return await Microservice.finder.find(DataFilter.any());
+    }
+
+    public static async findMicroserviceTemplate(): Promise<Microservice[]> {
+        const micro = await Microservice.finder.find(
+            DataFilter.equals("template", true),
+            OrderBy.nothing(),
+        );
+        return micro || null;
+    }
+
+    public static async findMicroservice(): Promise<Microservice[]> {
+        const micro = await Microservice.finder.find(
+            DataFilter.equals("template", false),
+            OrderBy.nothing(),
+        );
+        return micro || null;
+    }
+
+
+    public static async findMicroserviceByName(name: string): Promise<Microservice> {
+        const micro = await Microservice.finder.find(
+            DataFilter.equals("name", name),
+            OrderBy.nothing(),
+        );
+        return micro[0] || null;
     }
 
 }

@@ -462,10 +462,11 @@ export class AuthController extends Controller {
         }
 
 
-        const tx_hash = await trigger(false, "grantAdmin", [wallet.getPublicKey()], "");
+        //const tx_hash = await trigger(false, "grantAdmin", [wallet.getPublicKey()], "");
        
         response.status(OK);
-        response.json({ uid: createdUser.id, success:true, tx_hash: tx_hash});
+        //response.json({ uid: createdUser.id, success:true, tx_hash: tx_hash});
+        response.json({ uid: createdUser.id, success:true});
     }
 
     /**

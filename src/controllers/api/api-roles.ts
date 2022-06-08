@@ -11,10 +11,11 @@ import { User } from "../../models/user";
 export class RolesController extends Controller{
     public registerAPI(prefix: string, application: Express.Express): any {
         
-        application.post(prefix + "/roles/newRepresentative", expressSecurityMeasures(noCache(this.newRepresentative)));
-        application.post(prefix + "/roles/revokeRepresentative", expressSecurityMeasures(noCache(this.RevokeRepresentative)));
-        application.post(prefix + "/roles/newSupplier", expressSecurityMeasures(noCache(this.newSupplier)));
-        application.post(prefix + "/roles/revokeSupplier", expressSecurityMeasures(noCache(this.RevokeSupplier)));
+        application.post(prefix + "/roles/newRepresentative", expressSecurityMeasures(noCache(this.newRepresentative.bind(this))));
+        application.post(prefix + "/roles/revokeRepresentative", expressSecurityMeasures(noCache(this.RevokeRepresentative.bind(this))));
+        application.post(prefix + "/roles/newSupplier", expressSecurityMeasures(noCache(this.newSupplier.bind(this))));
+        application.post(prefix + "/roles/revokeSupplier", expressSecurityMeasures(noCache(this.RevokeSupplier.bind(this))));
+        application.post(prefix + "/roles/getType", expressSecurityMeasures(noCache(this.getUserRole.bind(this))));
         
     }
 
@@ -258,5 +259,23 @@ export class RolesController extends Controller{
     */
     public async RevokeSupplier(request: Express.Request, response: Express.Response) {
         
+    }
+
+
+    public async getUserRole(request: Express.Request, response: Express.Response) {
+        console.log(request);
+        const auth = await this.auth(request);
+        console.log(auth.user);
+        
+        if (!auth.isRegisteredUser()) {
+            response.status(UNAUTHORIZED);
+            response.end();
+            return;
+        }
+
+        const user = auth.user;
+        
+        response.json({ "user_role": user.role });
+        return;
     }
 }
