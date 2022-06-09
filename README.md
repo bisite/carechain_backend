@@ -1,47 +1,47 @@
-# Carechain backend for ADOS integration
+# Carechain
 
-## Instalación
+## Install
 
-Para instalar las dependencias utilizar:
+For install the dependencies:
 ```
 $ npm install
 ```
 
-Cuando se necesite instalar una dependencia que no esté instalada, utilizar:
+When you need to install a dependency that is not installed, use:
 ```
 $ npm install --save dependencia 
 ```
 
-Si la dependencia es una utilidad de compilación o also similar, utilizar:
+If the dependency is a compiler utility or similar, use:
 ```
 $ npm install --save-dev dependencia 
 ```
 
-## Compilación
+## Compilation
 
-Para compilar el código fuente, se debe utilizar:
+To compile the source code, you should use:
 ```
 $ npm run build
 ```
 
-Este comando hace 3 cosas:
+This command does 3 things:
 
- - Comprueba la calidad del código (Lint) y genera errores en caso de potenciales fallos (variables no declaradas, uso incorrecto de operadores, etc).
- - Transforma el código, que se encuentra en Typescript a Javascript, que es lo que interpreta NodeJS.
- - Minimiza el código de los scripts de la interfaz de usuario en un solo fichero, para agilizar su carga en producción.
+ -	Checks the quality of the code (Lint) and generates errors in case of potential bugs (undeclared variables, incorrect use of operators, etc).
+ -	It transforms the code, which is in Typescript to Javascript, which is what NodeJS interprets.
+ - Minimizes the code of the user interface scripts in a single file, to speed up its loading in production.
 
-La configuración del linter se encuentra en el fichero `.eslintrc`. Documentación: [https://eslint.org/docs/user-guide/configuring](https://eslint.org/docs/user-guide/configuring)
+The linter configuration is in the .eslintrc file. Documentation: https://eslint.org/docs/user-guide/configuring
 
-La configuración del compilador se encuentra en el fichero `tsconfig.json`. Documentación: [https://www.typescriptlang.org/docs/handbook/tsconfig-json.html](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
+The compiler configuration is in the tsconfig.json file. Documentation: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
 
-Una vez compilado, se puede ejecutar, haciendo uso del siguiente comando:
+Once compiled, it can be run, using the following command:
 ```
 $ npm start
 ```
 
-Es importante tener en cuenta que los cambios que se hagan en el código no se reflejarán en la aplicación hasta que recompilemos.
+It is important to note that changes made to the code will not be reflected in the application until we recompile.
 
-## Documentación
+## Documentation
 
 - [Typescript](https://www.typescriptlang.org/docs/home.html)
 - [NodeJS](https://nodejs.org/es/docs/)
