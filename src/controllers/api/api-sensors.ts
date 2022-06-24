@@ -8,6 +8,7 @@ import { Monitor } from "../../monitor";
 import { BAD_REQUEST, expressSecurityMeasures, FORBIDDEN, INTERNAL_SERVER_ERROR, noCache, NOT_FOUND, OK } from "../../utils/http-utils";
 import { createRandomUID } from "../../utils/text-utils";
 import { Controller } from "../controller";
+import fetch from 'node-fetch';
 
 
 export class SensorsController extends Controller{
@@ -334,6 +335,33 @@ export class SensorsController extends Controller{
             response.status(BAD_REQUEST);
             response.json({ error_code: "SENSOR_NOT_FOUND" });
             return;
+        }
+
+
+        if (sensor.auth.includes("ados")){
+            const data_api = {username: "carlos_alvarez@usal.es", password: "bisite_02ABX"}
+
+            const response_api = await fetch('https://api.airtrace.io/v1/users/login', {
+                method: 'POST',
+                body: JSON.stringify(data_api),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+
+            const response_json = await response_api.json();
+            const bearer = response_json['Token'];
+
+            const data_string = "" + sensor.name + "," + Date.now() + "," + data;
+            const url = "https://api.airtrace.io/v1" + sensor.auth.replace(/[^a-z0-9\/]/ig, "");
+            const response = await fetch(url, {
+                method: 'POST',
+                body: JSON.stringify({data: data_string}),
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": bearer
+                },
+            });
         }
 
         const sensorDataCreated: SensorsData = new SensorsData({

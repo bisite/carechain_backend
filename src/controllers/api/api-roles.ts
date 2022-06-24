@@ -15,7 +15,11 @@ export class RolesController extends Controller{
         application.post(prefix + "/roles/revokeRepresentative", expressSecurityMeasures(noCache(this.RevokeRepresentative.bind(this))));
         application.post(prefix + "/roles/newSupplier", expressSecurityMeasures(noCache(this.newSupplier.bind(this))));
         application.post(prefix + "/roles/revokeSupplier", expressSecurityMeasures(noCache(this.RevokeSupplier.bind(this))));
-        application.post(prefix + "/roles/getType", expressSecurityMeasures(noCache(this.getUserRole.bind(this))));
+        application.get(prefix + "/roles/getType", expressSecurityMeasures(noCache(this.getUserRole.bind(this))));
+        application.get(prefix + "/roles/getInfo", expressSecurityMeasures(noCache(this.getUserInfo.bind(this))));
+        application.get(prefix + "/roles/getAllUsers", expressSecurityMeasures(noCache(this.getAllUsers.bind(this))));
+        application.post(prefix + "/roles/grant", expressSecurityMeasures(noCache(this.grant.bind(this))));
+        application.post(prefix + "/roles/revoke", expressSecurityMeasures(noCache(this.revoke.bind(this))));
         
     }
 
@@ -263,9 +267,7 @@ export class RolesController extends Controller{
 
 
     public async getUserRole(request: Express.Request, response: Express.Response) {
-        console.log(request);
         const auth = await this.auth(request);
-        console.log(auth.user);
         
         if (!auth.isRegisteredUser()) {
             response.status(UNAUTHORIZED);
@@ -278,4 +280,84 @@ export class RolesController extends Controller{
         response.json({ "user_role": user.role });
         return;
     }
+
+
+    public async getUserInfo(request: Express.Request, response: Express.Response) {
+        const auth = await this.auth(request);
+        
+        if (!auth.isRegisteredUser()) {
+            response.status(UNAUTHORIZED);
+            response.end();
+            return;
+        }
+
+        const user = auth.user;
+        
+        response.json({ "name": user.name, "surname": user.surname, "user_name": user.username, "email": user.email, "date_of_birth": user.birth_date, "gender": user.gender });
+        return;
+    }
+
+
+    public async getAllUsers(request: Express.Request, response: Express.Response) {
+        const users = await User.getAllUsers();
+        
+        response.json({ "users": users});
+        return;
+    }
+
+
+    public async grant(request: Express.Request, response: Express.Response) {
+
+        const username = request.body.username || "";
+        const userToUpgrade = await User.findUserByUsername(username);
+
+        if (userToUpgrade === null){
+            response.status(BAD_REQUEST);
+            response.send({error_code: "USER_NOT_FOUND"});
+            return;
+        }
+
+        userToUpgrade.role = 1;
+
+        try {
+            await userToUpgrade.save();
+        } catch (ex) {
+            console.log("UPGRADE_ERROR ");
+            response.status(BAD_REQUEST);
+            response.json({ error_code: "UPGRADE_ERROR" });
+            return;
+        }
+
+        response.status(OK);
+        response.json({ "success": true });
+        return;
+    }
+
+    public async revoke(request: Express.Request, response: Express.Response) {
+        const username = request.body.username || "";
+        const userToDowngrade = await User.findUserByUsername(username);
+
+        if (userToDowngrade === null){
+            response.status(BAD_REQUEST);
+            response.send({error_code: "USER_NOT_FOUND"});
+            return;
+        }
+
+        userToDowngrade.role = 0;
+
+        try {
+            await userToDowngrade.save();
+        } catch (ex) {
+            console.log("UPGRADE_ERROR ");
+            response.status(BAD_REQUEST);
+            response.json({ error_code: "UPGRADE_ERROR" });
+            return;
+        }
+
+
+        response.status(OK);
+        response.json({ "success": true });
+        return;
+    }
+
 }

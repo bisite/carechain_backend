@@ -21,8 +21,6 @@ export class BlockchainController extends Controller{
         application.post(prefix + "/blockchain/representative/addSpecificClaim", noCache(this.addClaim))
         application.post(prefix + "/blockchain/representative/addClaim", noCache(this.addClaimRepresentative))
         application.post(prefix + "/blockchain/supplier/addGenericClaim", noCache(this.addClaimSupplier))
-
-        
         
         application.get(prefix + "/blockchain/admin/get", expressSecurityMeasures(noCache(this.isAdmin)))
         application.get(prefix + "/blockchain/root/get", expressSecurityMeasures(noCache(this.root)))
@@ -31,7 +29,6 @@ export class BlockchainController extends Controller{
 
         application.get(prefix + "/blockchain/microservices/get", expressSecurityMeasures(noCache(this.getMicroservices)))
         application.get(prefix + "/blockchain/microservices/get_templates", expressSecurityMeasures(noCache(this.getMicroservicesTemplates)))
-
 
         application.get(prefix + "/blockchain/examples", expressSecurityMeasures(noCache(this.examples)))
 

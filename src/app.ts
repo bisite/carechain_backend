@@ -52,17 +52,6 @@ export class MainWebApplication {
         this.application.use(CookieParser());
         this.application.use(ExpressUserAgent.express());
 
-        // Internationalization
-        I18N.configure({
-            locales: ["en", "es"],
-            directory: Path.resolve(__dirname, "..", "locales"),
-            header: 'accept-language',
-            cookie: "locale",
-            extension: ".json",
-        });
-
-        this.application.use(I18N.init);
-
         // Static files
         this.application.use("/static", Assets.statify.middleware);
         this.application.use("/favicon.ico", Express.static(Path.resolve(__dirname, "../static/images/favicon.ico")));
@@ -246,6 +235,7 @@ export class MainWebApplication {
         if (Config.getInstance().allowedOrigins.indexOf(origin) > -1) {
             response.setHeader("Access-Control-Allow-Origin", origin);
         }
+        response.setHeader("Access-Control-Allow-Origin", origin);
         next();
     }
 

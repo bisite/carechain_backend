@@ -64,7 +64,7 @@ export class Session extends DataModel {
         
         const remoteAddress = (request.headers["x-forwarded-for"] || request.connection.remoteAddress) + "";
         try {
-            const sid = request.method !== "GET" ? request.headers["x-session-id"] : request.headers["x-session-id"] || request.cookies.session_id;
+            const sid = request.method !== "GET" ? request.headers["x-session-id"] : request.headers["x-session-id"] || request.cookies["x-session-id"];
             if (sid) {
                 const session = await Session.findSecure(sid);
                 if (session !== null) {

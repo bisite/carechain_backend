@@ -254,7 +254,7 @@ export class Config {
             { locale: "es", name: "Español" }
         ];
 
-        config.allowedOrigins = rawConfig.allowed_origins || [];
+        config.allowedOrigins = rawConfig.allowed_origins || ["http://localhost:5000"];
 
         config.usingProxy = !!rawConfig.using_proxy;
 
